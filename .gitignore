@@ -5,6 +5,7 @@ dist/
 .npm-cache/
 .env
 .env.*
+!.env.example
 FIGMA_*.md
 qa-*.png
 preview/

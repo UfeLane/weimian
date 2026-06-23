@@ -1,68 +1,21 @@
 import { useState } from "react";
 import {
-  knowledgeBaseEntries,
   medicationFaqs,
   medicationProfile,
   personalFaqs,
   qaSuggestedPrompts,
   sleepFaqs,
 } from "../data";
+import { askDemoQa } from "../lib/qa";
 import { ChatIcon, ChevronRightIcon } from "../components/Icons";
 import { Button, Card, ComplianceNote, Input, PageHeader } from "../components/UI";
-
-function normalize(text) {
-  return text.trim().toLowerCase();
-}
-
-function getQaResponse(query) {
-  const cleaned = normalize(query);
-  if (!cleaned) return null;
-
-  const urgentSafetyMatch =
-    /加量|减量|停药|换药|两片|翻倍|自己调整|能不能继续吃|还能不能吃/.test(cleaned);
-  if (urgentSafetyMatch) {
-    return {
-      answer:
-        "这个问题涉及个体化用药决策。当前 Demo 只展示标签与记录信息，不提供加量、减量、停药或换药建议。请以医生处方、当地说明书和药师建议为准。",
-      sources: knowledgeBaseEntries.filter((item) => item.id === "med-safety-adjust-dose"),
-    };
-  }
-
-  const scored = knowledgeBaseEntries
-    .map((item) => {
-      const haystack = `${item.question} ${item.answer} ${item.keywords.join(" ")}`.toLowerCase();
-      let score = 0;
-      item.keywords.forEach((keyword) => {
-        if (cleaned.includes(keyword.toLowerCase())) score += 4;
-      });
-      cleaned.split(/[\s，。、“”！？；：,.!?;:()（）/]+/).forEach((token) => {
-        if (token && haystack.includes(token)) score += 1;
-      });
-      if (cleaned.includes(item.question.replace("？", "").toLowerCase())) score += 5;
-      return { item, score };
-    })
-    .filter((entry) => entry.score > 0)
-    .sort((left, right) => right.score - left.score);
-
-  if (!scored.length) {
-    return {
-      answer:
-        "这个问题我暂时没有在当前演示知识库中检索到明确答案。你可以换一种问法，或者先问我睡眠记录、达卫可适应症、用药周期、余量、有效期这类问题。",
-      sources: [],
-    };
-  }
-
-  return {
-    answer: scored[0].item.answer,
-    sources: scored.slice(0, 3).map((entry) => entry.item),
-  };
-}
 
 export default function FAQPage() {
   const [tab, setTab] = useState("sleep");
   const [openIndex, setOpenIndex] = useState(0);
   const [query, setQuery] = useState("");
   const [qaResult, setQaResult] = useState(null);
+  const [loading, setLoading] = useState(false);
   const faqs = tab === "sleep" ? sleepFaqs : medicationFaqs;
 
   const switchTab = (nextTab) => {
@@ -70,10 +23,13 @@ export default function FAQPage() {
     setOpenIndex(0);
   };
 
-  const submitQuestion = (nextQuery) => {
-    const result = getQaResponse(nextQuery);
+  const submitQuestion = async (nextQuery) => {
+    if (!nextQuery.trim()) return;
     setQuery(nextQuery);
+    setLoading(true);
+    const result = await askDemoQa(nextQuery);
     setQaResult(result);
+    setLoading(false);
   };
 
   return (
@@ -124,7 +80,7 @@ export default function FAQPage() {
             value={query}
           />
           <Button className="shrink-0 !px-4" onClick={() => submitQuestion(query)}>
-            提问
+            {loading ? "思考中" : "提问"}
           </Button>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -144,6 +100,9 @@ export default function FAQPage() {
       {qaResult ? (
         <Card className="mt-4 border-[#0388A6]/14 bg-white/92 p-4">
           <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">DEMO ANSWER</p>
+          <p className="mt-2 text-[10px] font-semibold text-[#0388A6]">
+            模式：{qaResult.mode === "remote" ? "真实模型" : qaResult.mode === "local-fallback" ? "模型失败，已回退本地知识库" : "本地知识库"}
+          </p>
           <p className="mt-3 text-[13px] leading-[1.8] text-[#2D215F]/72">{qaResult.answer}</p>
           {qaResult.sources.length ? (
             <div className="mt-4 space-y-2">
