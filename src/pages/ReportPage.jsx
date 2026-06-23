@@ -57,7 +57,7 @@ export default function ReportPage({ onToast }) {
 
       <section className="mt-7">
         <SectionTitle eyebrow="KEY DATA" title="最近 7 天关键数据" />
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
           <Card className="p-4">
             <p className="text-[10px] font-semibold leading-relaxed text-[#2D215F]/45">
               平均入睡耗时
@@ -140,7 +140,7 @@ export default function ReportPage({ onToast }) {
         </Card>
       </section>
 
-      <div className="mt-5 grid grid-cols-2 gap-3">
+      <div className="mt-5 grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
         <Button onClick={() => onToast("Demo 报告已准备导出")} variant="outline">
           <DownloadIcon size={18} />
           导出报告

@@ -106,7 +106,7 @@ export default function MedicationPage({ onNavigate, onToast }) {
               </p>
             </div>
           </div>
-          <div className="mt-5 grid grid-cols-2 gap-3">
+          <div className="mt-5 grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
             <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
               <p className="text-[10px] font-semibold text-[#2D215F]/42">开始时间</p>
               <p className="mt-1 text-sm font-black text-[#2D215F]">{currentMedication.startedOn}</p>
@@ -180,7 +180,7 @@ export default function MedicationPage({ onNavigate, onToast }) {
         </Card>
       </section>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="mt-4 grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
         <Button onClick={() => onNavigate("adverse")} variant="soft">
           记录不适
         </Button>

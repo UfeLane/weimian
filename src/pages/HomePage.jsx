@@ -145,7 +145,7 @@ export default function HomePage({ onNavigate, onToast }) {
 
       <section className="mt-7">
         <SectionTitle eyebrow="TODAY" title="今日睡眠概览" />
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
           {sleepStats.map((stat) => (
             <Card className="p-4" key={stat.label}>
               <p className="text-[11px] font-semibold text-[#2D215F]/45">{stat.label}</p>
@@ -166,7 +166,7 @@ export default function HomePage({ onNavigate, onToast }) {
 
       <section className="mt-7">
         <SectionTitle eyebrow="QUICK ACCESS" title="快速记录" />
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
           {quickActions.map(({ label, sub, Icon, page }, index) => (
             <button
               className={`card pressable flex min-h-[112px] items-start gap-3 rounded-[22px] p-4 text-left ${

@@ -93,7 +93,7 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
             <Input defaultValue="10:30" type="time" />
           </FormField>
           <FormField label="是否影响日间活动">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 min-[360px]:grid-cols-2">
               {["否", "是"].map((item) => (
                 <Chip active={impact === item} key={item} onClick={() => setImpact(item)}>
                   {item}
