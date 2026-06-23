@@ -8,7 +8,7 @@ import {
 
 export function StatusBar() {
   return (
-    <div className="flex h-8 items-center justify-between px-1 text-[11px] font-bold text-[#2D215F]">
+    <div className="flex h-8 items-center justify-between px-1.5 text-[11px] font-bold text-[#2D215F]">
       <span>9:41</span>
       <div className="flex items-center gap-1.5">
         <span className="h-2.5 w-3.5 rounded-[2px] border border-[#2D215F]" />
@@ -25,12 +25,12 @@ export function PageHeader({ title, subtitle, onBack, action }) {
   return (
     <>
       <StatusBar />
-      <header className="mb-5 flex min-h-12 items-center justify-between">
+      <header className="mb-5 flex min-h-14 items-center justify-between">
         <div className="flex min-w-0 items-center gap-2">
           {onBack ? (
             <button
               aria-label="返回"
-              className="pressable -ml-2 grid h-10 w-10 shrink-0 place-items-center rounded-full text-[#2D215F]"
+              className="pressable -ml-2 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/68 text-[#2D215F] shadow-[0_6px_16px_rgba(45,33,95,0.06)]"
               onClick={onBack}
               type="button"
             >
@@ -42,7 +42,9 @@ export function PageHeader({ title, subtitle, onBack, action }) {
               {title}
             </h1>
             {subtitle ? (
-              <p className="mt-0.5 truncate text-[11px] text-[#2D215F]/55">{subtitle}</p>
+              <p className="mt-0.5 truncate text-[11px] leading-relaxed text-[#2D215F]/55">
+                {subtitle}
+              </p>
             ) : null}
           </div>
         </div>
@@ -96,7 +98,7 @@ export function Button({
 
   return (
     <button
-      className={`pressable inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 text-sm font-bold ${styles[variant]} ${disabled ? "cursor-not-allowed opacity-50" : ""} ${className}`}
+      className={`pressable inline-flex min-h-[46px] items-center justify-center gap-2 rounded-[18px] px-5 text-sm font-bold ${styles[variant]} ${disabled ? "cursor-not-allowed opacity-50" : ""} ${className}`}
       disabled={disabled}
       onClick={onClick}
       type={type}
@@ -130,7 +132,7 @@ export function FormField({ label, hint, children }) {
 export function Input({ className = "", ...props }) {
   return (
     <input
-      className={`h-12 w-full rounded-2xl border border-[#2D215F]/10 bg-[#F2F2F2] px-4 text-sm font-semibold text-[#2D215F] outline-none transition focus:border-[#0388A6]/50 focus:bg-white ${className}`}
+      className={`h-[46px] w-full rounded-[18px] border border-[#2D215F]/10 bg-[#F2F2F2] px-4 text-sm font-semibold text-[#2D215F] outline-none transition focus:border-[#0388A6]/50 focus:bg-white ${className}`}
       {...props}
     />
   );
@@ -139,7 +141,7 @@ export function Input({ className = "", ...props }) {
 export function Chip({ active, children, onClick }) {
   return (
     <button
-      className={`pressable rounded-full border px-4 py-2.5 text-xs font-bold transition ${
+      className={`pressable min-h-[38px] rounded-full border px-4 py-2.5 text-xs font-bold transition ${
         active
           ? "border-[#BF047E] bg-[#BF047E] text-white"
           : "border-[#2D215F]/10 bg-white text-[#2D215F]/65"
@@ -161,7 +163,7 @@ export function BottomNav({ active, onNavigate }) {
   ];
 
   return (
-    <nav className="absolute bottom-0 left-0 right-0 z-30 border-t border-[#2D215F]/8 bg-white/95 px-3 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_36px_rgba(45,33,95,0.07)] backdrop-blur-xl">
+    <nav className="mini-bottom-nav z-30 shrink-0 border-t border-[#2D215F]/8 bg-white/95 px-3 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_36px_rgba(45,33,95,0.07)] backdrop-blur-xl">
       <div className="grid grid-cols-4">
         {tabs.map(({ id, label, Icon }) => {
           const isActive = active === id;

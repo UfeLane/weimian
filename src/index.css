@@ -14,6 +14,8 @@
   --surface: #ffffff;
   --background: #f2f2f2;
   --ink: #2d215f;
+  --device-max-width: 430px;
+  --page-gutter: 18px;
 }
 
 * {
@@ -21,17 +23,26 @@
 }
 
 html {
+  min-height: 100%;
   background: #f2f2f2;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  min-height: 100dvh;
   background:
     radial-gradient(circle at 18% 12%, rgb(242 174 219 / 28%), transparent 30%),
     radial-gradient(circle at 82% 88%, rgb(3 136 166 / 16%), transparent 28%),
     #f2f2f2;
+  overscroll-behavior-y: none;
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 button,
@@ -46,25 +57,43 @@ button {
 
 .app-shell {
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .phone {
   position: relative;
-  width: min(100%, 390px);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--device-max-width);
   min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   margin: 0 auto;
   overflow: hidden;
   background: #f2f2f2;
 }
 
+.phone-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-bottom: 24px;
+}
+
 .page {
-  min-height: 100vh;
-  padding: 0 16px 112px;
+  min-height: 100%;
+  padding:
+    max(12px, env(safe-area-inset-top)) var(--page-gutter)
+    28px;
   animation: page-in 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .safe-top {
-  height: 14px;
+  height: max(14px, env(safe-area-inset-top));
 }
 
 .card {
@@ -102,6 +131,22 @@ button {
   display: none;
 }
 
+.mini-bottom-nav {
+  position: relative;
+}
+
+.mini-bottom-nav::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  height: 4px;
+  width: 132px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgb(45 33 95 / 7%);
+}
+
 @keyframes page-in {
   from {
     opacity: 0;
@@ -124,19 +169,28 @@ button {
   }
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .app-shell {
-    padding: 28px 0;
+    padding: 28px 20px;
   }
 
   .phone {
     min-height: calc(100vh - 56px);
+    min-height: calc(100dvh - 56px);
+    height: calc(100vh - 56px);
+    height: calc(100dvh - 56px);
     border: 8px solid #2d215f;
     border-radius: 42px;
     box-shadow: 0 28px 80px rgb(45 33 95 / 20%);
   }
 
   .page {
-    min-height: calc(100vh - 72px);
+    min-height: 100%;
+  }
+}
+
+@media (max-width: 389px) {
+  :root {
+    --page-gutter: 14px;
   }
 }

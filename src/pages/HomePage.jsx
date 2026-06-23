@@ -96,25 +96,25 @@ export default function HomePage({ onNavigate, onToast }) {
         title="卫眠伴行"
       />
 
-      <section className="relative overflow-hidden rounded-[30px] bg-[linear-gradient(140deg,#2D215F_0%,#BF046B_58%,#BF047E_100%)] p-6 text-white shadow-[0_20px_45px_rgba(191,4,107,0.24)]">
+      <section className="relative overflow-hidden rounded-[30px] bg-[linear-gradient(140deg,#2D215F_0%,#BF046B_58%,#BF047E_100%)] px-5 pb-6 pt-5 text-white shadow-[0_20px_45px_rgba(191,4,107,0.24)]">
         <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full border-[24px] border-[#F2AEDB]/15" />
         <div className="absolute -bottom-6 right-8 h-16 w-32 rotate-[-18deg] rounded-full border border-white/15 bg-white/8" />
         <div className="relative">
           <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-[0.12em]">
             好眠档案
           </span>
-          <h2 className="mt-5 max-w-[270px] text-[26px] font-black leading-[1.25] tracking-[-0.05em]">
+          <h2 className="mt-4 max-w-[292px] text-[27px] font-black leading-[1.22] tracking-[-0.05em]">
             把“我睡不好”，
             <br />
             变成医生看得懂的
             <br />
             睡眠档案。
           </h2>
-          <p className="mt-4 max-w-[275px] text-xs leading-relaxed text-white/70">
+          <p className="mt-3 max-w-[290px] text-[12px] leading-[1.7] text-white/72">
             连续记录睡眠、用药与身体感受，让每次复诊沟通更清楚。
           </p>
           <Button
-            className="mt-5 !min-h-11 !bg-white !px-4 !text-[#BF047E] !shadow-none"
+            className="mt-5 !min-h-[44px] !rounded-[16px] !bg-white !px-4 !text-[#BF047E] !shadow-none"
             onClick={() => onNavigate("sleep")}
           >
             开始今日记录
@@ -131,7 +131,7 @@ export default function HomePage({ onNavigate, onToast }) {
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-bold tracking-[0.12em] text-white/65">今日用药提醒</p>
-            <p className="mt-1 text-[17px] font-black">今晚 22:30 · 待打卡</p>
+            <p className="mt-1 text-[18px] font-black tracking-[-0.03em]">今晚 22:30 · 待打卡</p>
           </div>
           <button
             className="pressable rounded-full bg-white px-3 py-2 text-[11px] font-black text-[#0388A6]"
@@ -150,7 +150,7 @@ export default function HomePage({ onNavigate, onToast }) {
             <Card className="p-4" key={stat.label}>
               <p className="text-[11px] font-semibold text-[#2D215F]/45">{stat.label}</p>
               <p
-                className={`mt-2 text-[24px] font-black tracking-[-0.04em] ${
+                className={`mt-2 text-[26px] font-black tracking-[-0.04em] ${
                   stat.tone === "medical" ? "text-[#0388A6]" : "text-[#BF047E]"
                 }`}
               >
@@ -169,7 +169,7 @@ export default function HomePage({ onNavigate, onToast }) {
         <div className="grid grid-cols-2 gap-3">
           {quickActions.map(({ label, sub, Icon, page }, index) => (
             <button
-              className={`card pressable flex min-h-[104px] items-start gap-3 rounded-[22px] p-4 text-left ${
+              className={`card pressable flex min-h-[112px] items-start gap-3 rounded-[22px] p-4 text-left ${
                 index === 0 ? "border-[#BF047E]/15 bg-[#F2AEDB]/18" : ""
               }`}
               key={label}

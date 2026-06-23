@@ -38,15 +38,15 @@ export default function ReportPage({ onToast }) {
     <main className="page">
       <PageHeader subtitle="2026.06.17 - 2026.06.23" title="好眠档案报告" />
 
-      <section className="relative overflow-hidden rounded-[30px] bg-[linear-gradient(145deg,#2D215F_0%,#0388A6_100%)] p-6 text-white shadow-[0_20px_44px_rgba(45,33,95,0.22)]">
+      <section className="relative overflow-hidden rounded-[30px] bg-[linear-gradient(145deg,#2D215F_0%,#0388A6_100%)] px-5 pb-6 pt-5 text-white shadow-[0_20px_44px_rgba(45,33,95,0.22)]">
         <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full border-[28px] border-[#F2AEDB]/10" />
         <div className="relative">
           <span className="grid h-12 w-12 place-items-center rounded-[18px] bg-white/12">
             <ReportIcon size={24} />
           </span>
           <p className="mt-5 text-[10px] font-bold tracking-[0.16em] text-white/55">WEEKLY SUMMARY</p>
-          <h2 className="mt-2 text-2xl font-black tracking-[-0.04em]">本周记录完整度 86%</h2>
-          <p className="mt-2 text-xs leading-relaxed text-white/65">
+          <h2 className="mt-2 text-[28px] font-black tracking-[-0.05em]">本周记录完整度 86%</h2>
+          <p className="mt-2 text-[12px] leading-[1.7] text-white/68">
             已连续记录 6 天，可用于复诊时快速回顾睡眠与用药情况。
           </p>
           <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/12">

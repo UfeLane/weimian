@@ -66,7 +66,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <div className="phone">
-        {content}
+        <div className="phone-content">{content}</div>
         <BottomNav active={activeTab} onNavigate={navigate} />
         <Toast message={toast} />
       </div>
