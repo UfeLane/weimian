@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+:root {
+  font-family:
+    "HarmonyOS Sans SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  color: #2d215f;
+  background: #f2f2f2;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --brand: #bf047e;
+  --brand-deep: #bf046b;
+  --brand-soft: #f2aedb;
+  --medical: #0388a6;
+  --surface: #ffffff;
+  --background: #f2f2f2;
+  --ink: #2d215f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #f2f2f2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 12%, rgb(242 174 219 / 28%), transparent 30%),
+    radial-gradient(circle at 82% 88%, rgb(3 136 166 / 16%), transparent 28%),
+    #f2f2f2;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.phone {
+  position: relative;
+  width: min(100%, 390px);
+  min-height: 100vh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 0 16px 112px;
+  animation: page-in 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.safe-top {
+  height: 14px;
+}
+
+.card {
+  border: 1px solid rgb(45 33 95 / 8%);
+  box-shadow: 0 12px 30px rgb(45 33 95 / 7%);
+}
+
+.pressable {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.pressable:active {
+  transform: scale(0.975);
+  opacity: 0.92;
+}
+
+.pill-pattern {
+  background-image:
+    radial-gradient(ellipse at center, rgb(191 4 126 / 8%) 0 32%, transparent 34%),
+    radial-gradient(ellipse at center, rgb(3 136 166 / 7%) 0 32%, transparent 34%);
+  background-position:
+    0 0,
+    18px 18px;
+  background-size: 36px 36px;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 14px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (min-width: 640px) {
+  .app-shell {
+    padding: 28px 0;
+  }
+
+  .phone {
+    min-height: calc(100vh - 56px);
+    border: 8px solid #2d215f;
+    border-radius: 42px;
+    box-shadow: 0 28px 80px rgb(45 33 95 / 20%);
+  }
+
+  .page {
+    min-height: calc(100vh - 72px);
+  }
+}
