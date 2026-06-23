@@ -196,7 +196,7 @@ export function Toast({ message }) {
   if (!message) return null;
 
   return (
-    <div className="fixed bottom-24 left-1/2 z-50 w-[calc(100%-48px)] max-w-[342px] -translate-x-1/2 rounded-2xl bg-[#2D215F] px-4 py-3 text-center text-xs font-semibold leading-relaxed text-white shadow-2xl [animation:toast-in_240ms_ease-out]">
+    <div className="pointer-events-none absolute bottom-[calc(82px+env(safe-area-inset-bottom))] left-1/2 z-50 w-[calc(100%-48px)] max-w-[342px] -translate-x-1/2 rounded-2xl bg-[#2D215F] px-4 py-3 text-center text-xs font-semibold leading-relaxed text-white shadow-2xl [animation:toast-in_240ms_ease-out]">
       {message}
     </div>
   );

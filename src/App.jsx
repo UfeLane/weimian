@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BottomNav, Toast } from "./components/UI";
 import AdverseRecordPage from "./pages/AdverseRecordPage";
 import FAQPage from "./pages/FAQPage";
@@ -13,11 +13,12 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [previousPage, setPreviousPage] = useState("home");
   const [toast, setToast] = useState("");
+  const contentRef = useRef(null);
 
   const navigate = (nextPage) => {
     setPreviousPage(page);
     setPage(nextPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const showToast = (message) => {
@@ -66,7 +67,9 @@ export default function App() {
   return (
     <div className="app-shell">
       <div className="phone">
-        <div className="phone-content">{content}</div>
+        <div className="phone-content" ref={contentRef}>
+          {content}
+        </div>
         <BottomNav active={activeTab} onNavigate={navigate} />
         <Toast message={toast} />
       </div>
