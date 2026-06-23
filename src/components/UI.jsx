@@ -58,7 +58,7 @@ export function Card({ children, className = "" }) {
   const hasCustomBackground = className.includes("bg-");
   return (
     <section
-      className={`card rounded-[24px] ${hasCustomBackground ? "" : "bg-white"} ${className}`}
+      className={`card rounded-[var(--radius-card)] ${hasCustomBackground ? "" : "bg-white"} ${className}`}
     >
       {children}
     </section>
@@ -98,7 +98,7 @@ export function Button({
 
   return (
     <button
-      className={`pressable inline-flex min-h-[46px] items-center justify-center gap-2 rounded-[18px] px-5 text-sm font-bold ${styles[variant]} ${disabled ? "cursor-not-allowed opacity-50" : ""} ${className}`}
+      className={`pressable inline-flex min-h-[var(--control-height)] items-center justify-center gap-2 rounded-[var(--radius-control)] px-5 text-sm font-bold ${styles[variant]} ${disabled ? "cursor-not-allowed opacity-50" : ""} ${className}`}
       disabled={disabled}
       onClick={onClick}
       type={type}
@@ -110,7 +110,7 @@ export function Button({
 
 export function ComplianceNote({ children }) {
   return (
-    <div className="mt-5 flex gap-2 rounded-2xl border border-[#0388A6]/15 bg-[#0388A6]/6 p-3.5 text-[11px] leading-[1.65] text-[#2D215F]/65">
+    <div className="mt-5 flex gap-2 rounded-[var(--radius-control)] border border-[#0388A6]/15 bg-[#0388A6]/6 p-3.5 text-[11px] leading-[1.65] text-[#2D215F]/65">
       <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#0388A6]" />
       <p>{children}</p>
     </div>
@@ -132,7 +132,7 @@ export function FormField({ label, hint, children }) {
 export function Input({ className = "", ...props }) {
   return (
     <input
-      className={`h-[46px] w-full rounded-[18px] border border-[#2D215F]/10 bg-[#F2F2F2] px-4 text-sm font-semibold text-[#2D215F] outline-none transition focus:border-[#0388A6]/50 focus:bg-white ${className}`}
+      className={`h-[var(--control-height)] w-full rounded-[var(--radius-control)] border border-[#2D215F]/10 bg-[#F2F2F2] px-4 text-sm font-semibold text-[#2D215F] outline-none transition focus:border-[#0388A6]/50 focus:bg-white ${className}`}
       {...props}
     />
   );
@@ -141,7 +141,7 @@ export function Input({ className = "", ...props }) {
 export function Chip({ active, children, onClick }) {
   return (
     <button
-      className={`pressable min-h-[38px] rounded-full border px-4 py-2.5 text-xs font-bold transition ${
+      className={`pressable min-h-[var(--chip-height)] rounded-full border px-4 py-2.5 text-xs font-bold transition ${
         active
           ? "border-[#BF047E] bg-[#BF047E] text-white"
           : "border-[#2D215F]/10 bg-white text-[#2D215F]/65"
@@ -169,7 +169,7 @@ export function BottomNav({ active, onNavigate }) {
           const isActive = active === id;
           return (
             <button
-              className={`pressable flex min-h-[58px] flex-col items-center justify-center gap-1 rounded-2xl text-[10px] font-bold ${
+              className={`pressable flex min-h-[var(--nav-item-height)] flex-col items-center justify-center gap-1 rounded-[var(--radius-control)] text-[10px] font-bold ${
                 isActive ? "text-[#BF047E]" : "text-[#2D215F]/42"
               }`}
               key={id}
@@ -196,7 +196,7 @@ export function Toast({ message }) {
   if (!message) return null;
 
   return (
-    <div className="pointer-events-none absolute bottom-[calc(82px+env(safe-area-inset-bottom))] left-1/2 z-50 w-[calc(100%-48px)] max-w-[342px] -translate-x-1/2 rounded-2xl bg-[#2D215F] px-4 py-3 text-center text-xs font-semibold leading-relaxed text-white shadow-2xl [animation:toast-in_240ms_ease-out]">
+    <div className="pointer-events-none absolute bottom-[calc(var(--nav-toast-offset)+env(safe-area-inset-bottom))] left-1/2 z-50 w-[calc(100%-48px)] max-w-[342px] -translate-x-1/2 rounded-[var(--radius-control)] bg-[#2D215F] px-4 py-3 text-center text-xs font-semibold leading-relaxed text-white shadow-2xl [animation:toast-in_240ms_ease-out]">
       {message}
     </div>
   );

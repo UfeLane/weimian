@@ -1,0 +1,92 @@
+{
+  "sources": [
+    {
+      "id": "nhlbi-insomnia",
+      "label": "NHLBI, NIH · What Is Insomnia?",
+      "shortLabel": "NHLBI 失眠专题",
+      "url": "https://www.nhlbi.nih.gov/health/insomnia",
+      "accessedOn": "2026-06-23"
+    },
+    {
+      "id": "fda-dayvigo-overview",
+      "label": "FDA Drugs@FDA · DAYVIGO (NDA 212028)",
+      "shortLabel": "FDA 审批页",
+      "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=212028",
+      "accessedOn": "2026-06-23"
+    },
+    {
+      "id": "fda-dayvigo-label",
+      "label": "FDA Label PDF · DAYVIGO Prescribing Information",
+      "shortLabel": "FDA 标签 PDF",
+      "url": "https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf",
+      "accessedOn": "2026-06-23"
+    },
+    {
+      "id": "dailymed-dayvigo",
+      "label": "DailyMed · DAYVIGO- lemborexant tablet, film coated",
+      "shortLabel": "DailyMed 标签页",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=DAYVIGO",
+      "accessedOn": "2026-06-23"
+    },
+    {
+      "id": "internal-profile",
+      "label": "卫眠伴行 Demo · 当前用药档案",
+      "shortLabel": "当前档案",
+      "url": "#internal-profile",
+      "accessedOn": "2026-06-23"
+    }
+  ],
+  "medications": [
+    {
+      "id": "dayvigo-daweike",
+      "brandName": "达卫可",
+      "englishBrand": "DAYVIGO",
+      "genericName": "lemborexant",
+      "manufacturer": "Eisai / 卫材",
+      "indication": "治疗成人失眠，表现为入睡困难和/或睡眠维持困难。",
+      "doseSummary": "推荐起始 5 mg，每晚至多一次，睡前服用；可根据反应调整至 10 mg。",
+      "strengths": ["5 mg", "10 mg"],
+      "route": "片剂 / 口服",
+      "warnings": "需关注次日嗜睡、复杂睡眠行为、睡眠瘫痪和警觉性下降等风险。",
+      "commonAdverseReaction": "嗜睡",
+      "sources": ["fda-dayvigo-overview", "fda-dayvigo-label", "dailymed-dayvigo"]
+    }
+  ],
+  "knowledgeEntries": [
+    {
+      "id": "sleep-what-is-insomnia",
+      "category": "sleep",
+      "question": "什么是失眠？",
+      "answer": "失眠是一种常见睡眠障碍，即使有合适的睡眠时间和环境，仍可能出现入睡困难、睡眠维持困难或睡眠质量不佳。",
+      "keywords": ["失眠", "定义", "睡不着"],
+      "sourceId": "nhlbi-insomnia"
+    },
+    {
+      "id": "med-dayvigo-indication",
+      "category": "medication",
+      "question": "达卫可是治疗什么的？",
+      "answer": "根据 FDA 标签，DAYVIGO（lemborexant）用于治疗成人失眠，尤其是入睡困难和/或睡眠维持困难。",
+      "keywords": ["达卫可", "DAYVIGO", "适应症"],
+      "sourceId": "fda-dayvigo-label"
+    },
+    {
+      "id": "profile-remaining",
+      "category": "profile",
+      "question": "我用了多少药，还剩多少？",
+      "answer": "当前档案显示已使用 6 片，剩余 8 片，补药提醒日期为 2026.07.02。",
+      "keywords": ["用了多少", "剩多少", "余量"],
+      "sourceId": "internal-profile"
+    }
+  ],
+  "demoProfile": {
+    "userName": "演示患者 A",
+    "currentMedicationId": "dayvigo-daweike",
+    "reminderTime": "22:30",
+    "startedOn": "2026-06-17",
+    "cycleDays": 14,
+    "usedTablets": 6,
+    "remainingTablets": 8,
+    "refillDate": "2026-07-02",
+    "expiresOn": "2026-07-18"
+  }
+}

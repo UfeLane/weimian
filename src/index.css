@@ -16,6 +16,14 @@
   --ink: #2d215f;
   --device-max-width: 430px;
   --page-gutter: 18px;
+  --page-bottom-gap: 28px;
+  --radius-card: 24px;
+  --radius-control: 18px;
+  --radius-panel: 20px;
+  --control-height: 46px;
+  --chip-height: 38px;
+  --nav-item-height: 58px;
+  --nav-toast-offset: 82px;
 }
 
 * {
@@ -88,7 +96,7 @@ button {
   min-height: 100%;
   padding:
     max(12px, env(safe-area-inset-top)) var(--page-gutter)
-    28px;
+    var(--page-bottom-gap);
   animation: page-in 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -192,5 +200,8 @@ button {
 @media (max-width: 389px) {
   :root {
     --page-gutter: 14px;
+    --page-bottom-gap: 22px;
+    --radius-card: 22px;
+    --radius-control: 16px;
   }
 }

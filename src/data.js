@@ -1,3 +1,36 @@
+export const sourceCatalog = {
+  nhlbiInsomnia: {
+    label: "NHLBI, NIH · What Is Insomnia?",
+    shortLabel: "NHLBI 失眠专题",
+    url: "https://www.nhlbi.nih.gov/health/insomnia",
+    accessedOn: "2026-06-23",
+  },
+  fdaDayvigoOverview: {
+    label: "FDA Drugs@FDA · DAYVIGO (NDA 212028)",
+    shortLabel: "FDA 审批页",
+    url: "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=212028",
+    accessedOn: "2026-06-23",
+  },
+  fdaDayvigoLabel: {
+    label: "FDA Label PDF · DAYVIGO (lEmborexant) Prescribing Information",
+    shortLabel: "FDA 标签 PDF",
+    url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf",
+    accessedOn: "2026-06-23",
+  },
+  dailymedDayvigo: {
+    label: "DailyMed · DAYVIGO- lemborexant tablet, film coated",
+    shortLabel: "DailyMed 标签页",
+    url: "https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=DAYVIGO",
+    accessedOn: "2026-06-23",
+  },
+  internalProfile: {
+    label: "卫眠伴行 Demo · 当前用药档案",
+    shortLabel: "当前档案",
+    url: "#internal-profile",
+    accessedOn: "2026-06-23",
+  },
+};
+
 export const sleepStats = [
   { label: "入睡耗时", value: "45", unit: "分钟", tone: "brand" },
   { label: "夜间醒来", value: "2", unit: "次", tone: "medical" },
@@ -25,15 +58,18 @@ export const medicationWeek = [
   { day: "日", done: true },
 ];
 
-export const medicationProfile = {
-  patient: {
-    summary: "已在医生指导下于夜间服用助眠相关处方药，当前处于首个 14 天观察周期。",
-  },
-  currentMedication: {
-    name: "失眠处方药 A",
-    tag: "示例药品",
-    purpose: "用于医生指导下的夜间助眠管理",
-    dosage: "每晚 1 片",
+export const medicationLibrary = [
+  {
+    id: "dayvigo-daweike",
+    brandName: "达卫可",
+    englishBrand: "DAYVIGO",
+    genericName: "lemborexant",
+    tag: "卫材示例药品",
+    manufacturer: "Eisai / 卫材",
+    purpose: "用于治疗成人失眠，表现为入睡困难和/或睡眠维持困难。",
+    dosage: "推荐起始 5 mg，每晚至多一次，睡前服用。",
+    strengths: ["5 mg", "10 mg"],
+    route: "口服片剂",
     reminderTime: "22:30",
     startedOn: "2026.06.17",
     cycleDays: 14,
@@ -43,83 +79,161 @@ export const medicationProfile = {
     remainingTablets: 8,
     refillDate: "2026.07.02",
     expiresOn: "2026.07.18",
-    notes: "请按医生处方和说明书使用，不自行增减药。",
-  },
-};
-
-export const sleepFaqs = [
-  {
-    question: "什么是失眠？",
-    answer:
-      "失眠通常指在有合适睡眠机会的情况下，仍存在入睡困难、睡眠维持困难或早醒，并影响日间状态。若问题持续，请向医生描述发生频率和对生活的影响。",
-    keywords: ["失眠", "定义", "是什么", "睡不着"],
-    sourceLabel: "睡眠知识库",
-  },
-  {
-    question: "为什么明明很累却睡不着？",
-    answer:
-      "压力、作息变化、咖啡因、屏幕使用和身体不适等都可能影响入睡。建议记录当天的行为和感受，帮助复诊时更准确地沟通。",
-    keywords: ["累", "睡不着", "入睡困难", "原因", "压力"],
-    sourceLabel: "睡眠知识库",
-  },
-  {
-    question: "夜里总醒应该怎么记录？",
-    answer:
-      "可以记录大致醒来次数、每次清醒时长、是否起床，以及第二天的精神状态。无需追求分钟级精确，保持连续记录更重要。",
-    keywords: ["夜里", "总醒", "醒来", "记录", "怎么记"],
-    sourceLabel: "睡眠知识库",
-  },
-  {
-    question: "看医生前应该准备什么？",
-    answer:
-      "建议准备近 1 至 2 周睡眠记录、正在使用的药品清单、不适记录，以及最想和医生确认的三个问题。",
-    keywords: ["看医生", "复诊", "准备", "带什么"],
-    sourceLabel: "睡眠知识库",
-  },
-  {
-    question: "睡眠日记应该怎么记？",
-    answer:
-      "每天起床后记录上床时间、估计入睡耗时、醒来次数、起床时间、总睡眠时长和日间状态即可。",
-    keywords: ["睡眠日记", "怎么记", "记录", "日记"],
-    sourceLabel: "睡眠知识库",
+    instructionsNote:
+      "演示信息基于 FDA / DailyMed 公开标签整理，实际使用以医生处方、当地说明书和药师指导为准。",
+    sources: [
+      sourceCatalog.fdaDayvigoOverview,
+      sourceCatalog.fdaDayvigoLabel,
+      sourceCatalog.dailymedDayvigo,
+    ],
+    leafletSections: [
+      {
+        title: "适应症",
+        body: "用于治疗成人失眠，尤其是入睡困难和/或睡眠维持困难。",
+        source: sourceCatalog.fdaDayvigoLabel,
+      },
+      {
+        title: "用法用量",
+        body: "推荐起始剂量为每晚 5 mg，睡前立即服用，且距计划醒来时间至少还剩 7 小时。可根据临床反应和耐受性调整至 10 mg；最大推荐剂量为每晚 10 mg。",
+        source: sourceCatalog.fdaDayvigoLabel,
+      },
+      {
+        title: "服药提示",
+        body: "与餐同服或餐后很快服用，可能会延迟入睡起效时间；中度肝功能受损患者最大推荐剂量为 5 mg，重度肝功能受损者不推荐。",
+        source: sourceCatalog.fdaDayvigoLabel,
+      },
+      {
+        title: "重要警示",
+        body: "可能出现次日嗜睡、警觉性下降、复杂睡眠行为、睡眠瘫痪、幻觉样体验或抑郁加重等风险；合并其他中枢抑制药物时需格外谨慎。",
+        source: sourceCatalog.fdaDayvigoLabel,
+      },
+      {
+        title: "常见不良反应",
+        body: "官方标签列出的最常见不良反应为 somnolence（嗜睡）。如出现明显不适，应及时联系医生或药师。",
+        source: sourceCatalog.fdaDayvigoLabel,
+      },
+    ],
   },
 ];
 
-export const medicationFaqs = [
+export const medicationProfile = {
+  patient: {
+    summary:
+      "已在医生指导下于夜间服用助眠相关处方药，当前处于首个 14 天观察周期，重点关注入睡耗时、白天嗜睡和漏服情况。",
+  },
+  currentMedication: {
+    ...medicationLibrary[0],
+    name: "达卫可",
+    purpose:
+      "治疗成人失眠，表现为入睡困难和/或睡眠维持困难；当前仅作为本 Demo 的卫材示例药品。",
+    notes:
+      "请按医生处方、当地正式说明书和药师建议使用；本 Demo 不提供加量、减量、停药或换药建议。",
+  },
+};
+
+export const knowledgeBaseEntries = [
   {
-    question: "用药期间需要记录什么？",
+    id: "sleep-what-is-insomnia",
+    category: "sleep",
+    question: "什么是失眠？",
     answer:
-      "建议记录实际用药时间、是否漏服、睡眠变化和出现的不适。记录用于帮助医生了解情况，不代表对疗效作出判断。",
-    keywords: ["用药", "记录什么", "需要记录", "期间"],
-    sourceLabel: "用药知识库",
+      "失眠是一种常见睡眠障碍，即使有合适的睡眠时间和环境，仍然可能出现入睡困难、睡眠维持困难，或者睡眠质量不佳，并影响白天状态。",
+    keywords: ["失眠", "定义", "是什么", "睡不着"],
+    source: sourceCatalog.nhlbiInsomnia,
   },
   {
-    question: "漏服后应该怎么办？",
+    id: "sleep-short-vs-chronic",
+    category: "sleep",
+    question: "短期失眠和长期失眠有什么区别？",
     answer:
-      "不同药品的处理方式可能不同，请查看药品说明书或咨询医生、药师。系统只记录漏服，不提供补服或剂量建议。",
-    keywords: ["漏服", "怎么办", "补服", "错过"],
-    sourceLabel: "用药知识库",
+      "NHLBI 提到，短期失眠常与压力、作息或环境变化相关，可持续数天到数周；慢性失眠通常每周 3 晚或以上、持续超过 3 个月，且不能完全由其他健康问题解释。",
+    keywords: ["短期", "长期", "慢性", "几周", "几个月"],
+    source: sourceCatalog.nhlbiInsomnia,
   },
   {
-    question: "出现不适时应该怎么记录？",
+    id: "sleep-prepare-visit",
+    category: "sleep",
+    question: "复诊前应该准备什么？",
     answer:
-      "记录不适类型、严重程度、发生时间、持续多久，以及是否影响日间活动。若症状明显、持续或令你担心，请及时就医。",
-    keywords: ["不适", "怎么记录", "头晕", "嗜睡", "恶心"],
-    sourceLabel: "用药知识库",
+      "可准备近 1 至 2 周的睡眠记录、当前用药清单、出现过的不适和最想确认的 3 个问题。这样能让医生更快理解你的睡眠和用药变化。",
+    keywords: ["复诊", "准备", "看医生", "带什么"],
+    source: sourceCatalog.nhlbiInsomnia,
   },
   {
-    question: "说明书看不懂怎么办？",
+    id: "sleep-diary",
+    category: "sleep",
+    question: "睡眠日记应该记录什么？",
     answer:
-      "可以标记不理解的段落，在复诊或购药时向医生、药师询问。不要根据片段信息自行改变用药方式。",
-    keywords: ["说明书", "看不懂", "怎么办", "询问"],
-    sourceLabel: "用药知识库",
+      "建议记录上床时间、估计入睡耗时、夜间醒来次数、起床时间、总睡眠时长，以及第二天的精神状态；连续记录比分钟级精确更重要。",
+    keywords: ["睡眠日记", "记录", "怎么记", "夜里醒来"],
+    source: sourceCatalog.nhlbiInsomnia,
   },
   {
-    question: "我能不能调整剂量？",
+    id: "med-dayvigo-indication",
+    category: "medication",
+    question: "达卫可是用来做什么的？",
     answer:
-      "这个问题涉及个体诊疗或用药决策，系统不能提供加量、减量、停药或换药建议。请遵循医生处方，如有疑问请咨询医生或药师。",
+      "根据 FDA 的 DAYVIGO 标签，lemborexant 用于治疗成人失眠，主要针对入睡困难和/或睡眠维持困难。",
+    keywords: ["达卫可", "DAYVIGO", "干什么", "适应症", "治疗什么"],
+    source: sourceCatalog.fdaDayvigoLabel,
+  },
+  {
+    id: "med-dayvigo-dose",
+    category: "medication",
+    question: "达卫可的起始剂量和常见规格是什么？",
+    answer:
+      "官方标签列出的推荐起始剂量是每晚 5 mg，睡前立即服用，且应确保离计划醒来至少还有 7 小时；可根据反应和耐受性调整到 10 mg。官方审批页显示常见规格为 5 mg 和 10 mg 片剂。",
+    keywords: ["剂量", "5mg", "10mg", "规格", "怎么吃", "睡前"],
+    source: sourceCatalog.fdaDayvigoOverview,
+  },
+  {
+    id: "med-dayvigo-warning",
+    category: "medication",
+    question: "达卫可有什么重点风险提示？",
+    answer:
+      "FDA 标签提示需关注次日警觉性下降、嗜睡、复杂睡眠行为、睡眠瘫痪、幻觉样体验和抑郁加重等风险。若合并其他中枢抑制药物，风险可能上升。",
+    keywords: ["风险", "警示", "副作用", "嗜睡", "复杂睡眠行为"],
+    source: sourceCatalog.fdaDayvigoLabel,
+  },
+  {
+    id: "med-safety-adjust-dose",
+    category: "medication",
+    question: "我能不能自己加量、减量或停药？",
+    answer:
+      "这类问题属于个体化诊疗决策。本 Demo 只展示标签和记录功能，不提供加量、减量、停药或换药建议。请严格遵循医生处方，并结合当地正式说明书、药师建议判断。",
+    keywords: ["加量", "减量", "停药", "换药", "自己调整", "能不能吃两片"],
     safety: true,
-    keywords: ["剂量", "调整", "加量", "减量", "停药", "换药"],
-    sourceLabel: "用药知识库",
+    source: sourceCatalog.fdaDayvigoLabel,
   },
+  {
+    id: "profile-cycle",
+    category: "profile",
+    question: "我现在的用药周期到第几天了？",
+    answer: "根据当前档案，你处于首个 14 天观察周期的第 7 天，今晚提醒时间为 22:30。",
+    keywords: ["第几天", "周期", "今天第几天", "提醒时间"],
+    source: sourceCatalog.internalProfile,
+  },
+  {
+    id: "profile-remaining",
+    category: "profile",
+    question: "我用了多少药，还剩多少？",
+    answer:
+      "根据当前档案，你已使用 6 片，剩余 8 片；系统中的补药提醒日期为 2026.07.02，有效期展示为 2026.07.18。",
+    keywords: ["用了多少", "剩多少", "余量", "补药", "有效期", "过期"],
+    source: sourceCatalog.internalProfile,
+  },
+];
+
+export const sleepFaqs = knowledgeBaseEntries.filter((item) => item.category === "sleep");
+export const medicationFaqs = knowledgeBaseEntries.filter(
+  (item) => item.category === "medication",
+);
+export const personalFaqs = knowledgeBaseEntries.filter((item) => item.category === "profile");
+
+export const qaSuggestedPrompts = [
+  "达卫可是治疗什么的？",
+  "我现在这个周期到第几天了？",
+  "我用了多少药，还剩多少？",
+  "睡眠日记应该怎么记？",
+  "我能不能自己调整剂量？",
 ];

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { medicationProfile, medicationWeek } from "../data";
+import { medicationLibrary, medicationProfile, medicationWeek } from "../data";
 import {
   CheckIcon,
   ChevronRightIcon,
@@ -18,11 +18,21 @@ import {
 export default function MedicationPage({ onNavigate, onToast }) {
   const [checked, setChecked] = useState(false);
   const [time, setTime] = useState(medicationProfile.currentMedication.reminderTime);
+  const [importedMedicationId, setImportedMedicationId] = useState(medicationProfile.currentMedication.id);
+  const [openLeafletIndex, setOpenLeafletIndex] = useState(0);
   const { patient, currentMedication } = medicationProfile;
+  const importedMedication =
+    medicationLibrary.find((item) => item.id === importedMedicationId) ?? medicationLibrary[0];
 
   const handleCheck = () => {
     setChecked((value) => !value);
     onToast(checked ? "已撤销今日打卡" : "已完成今日用药打卡");
+  };
+
+  const handleImport = (medication) => {
+    setImportedMedicationId(medication.id);
+    setTime(medication.reminderTime);
+    onToast(`已导入 ${medication.brandName} 演示药品与说明书`);
   };
 
   return (
@@ -96,34 +106,37 @@ export default function MedicationPage({ onNavigate, onToast }) {
             </span>
             <div className="min-w-0 flex-1">
               <span className="rounded-full bg-[#0388A6]/9 px-2.5 py-1 text-[9px] font-bold text-[#0388A6]">
-                {currentMedication.tag}
+                {importedMedication.tag}
               </span>
               <h3 className="mt-2 text-[15px] font-black text-[#2D215F]">
-                {currentMedication.name}
+                {importedMedication.brandName} / {importedMedication.englishBrand}
               </h3>
               <p className="mt-1 text-[11px] leading-relaxed text-[#2D215F]/48">
-                {currentMedication.notes}
+                通用名 {importedMedication.genericName} · {importedMedication.route}
+              </p>
+              <p className="mt-2 text-[11px] leading-relaxed text-[#2D215F]/60">
+                {importedMedication.instructionsNote}
               </p>
             </div>
           </div>
           <div className="mt-5 grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
             <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
               <p className="text-[10px] font-semibold text-[#2D215F]/42">开始时间</p>
-              <p className="mt-1 text-sm font-black text-[#2D215F]">{currentMedication.startedOn}</p>
+              <p className="mt-1 text-sm font-black text-[#2D215F]">{importedMedication.startedOn}</p>
             </div>
             <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
               <p className="text-[10px] font-semibold text-[#2D215F]/42">补药提醒</p>
-              <p className="mt-1 text-sm font-black text-[#BF047E]">{currentMedication.refillDate}</p>
+              <p className="mt-1 text-sm font-black text-[#BF047E]">{importedMedication.refillDate}</p>
             </div>
             <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
               <p className="text-[10px] font-semibold text-[#2D215F]/42">已使用</p>
               <p className="mt-1 text-sm font-black text-[#0388A6]">
-                {currentMedication.usedTablets} 片
+                {importedMedication.usedTablets} 片
               </p>
             </div>
             <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
               <p className="text-[10px] font-semibold text-[#2D215F]/42">有效期</p>
-              <p className="mt-1 text-sm font-black text-[#2D215F]">{currentMedication.expiresOn}</p>
+              <p className="mt-1 text-sm font-black text-[#2D215F]">{importedMedication.expiresOn}</p>
             </div>
           </div>
           <div className="mt-5 flex items-center justify-between rounded-2xl bg-[#F2F2F2] p-3.5">
@@ -138,7 +151,103 @@ export default function MedicationPage({ onNavigate, onToast }) {
               value={time}
             />
           </div>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {importedMedication.sources.map((source) => (
+              <a
+                className="rounded-full border border-[#2D215F]/8 bg-white px-3 py-2 text-[10px] font-bold text-[#2D215F]/68"
+                href={source.url}
+                key={source.url}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {source.shortLabel}
+              </a>
+            ))}
+          </div>
         </Card>
+      </section>
+
+      <section className="mt-7">
+        <SectionTitle eyebrow="IMPORT" title="演示药品导入" />
+        <div className="space-y-3">
+          {medicationLibrary.map((medication) => {
+            const imported = medication.id === importedMedicationId;
+            return (
+              <Card className="p-4" key={medication.id}>
+                <div className="flex items-start gap-3">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#F2AEDB]/30 text-[#BF047E]">
+                    <PillIcon size={22} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-black text-[#2D215F]">
+                      {medication.brandName} / {medication.englishBrand}
+                    </p>
+                    <p className="mt-1 text-[11px] leading-relaxed text-[#2D215F]/55">
+                      {medication.purpose}
+                    </p>
+                    <p className="mt-1 text-[10px] text-[#2D215F]/42">
+                      {medication.manufacturer} · 规格 {medication.strengths.join(" / ")}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-semibold text-[#0388A6]">
+                    来源：{medication.sources[0].shortLabel}
+                  </span>
+                  <Button
+                    className="!min-h-[40px] !px-4"
+                    onClick={() => handleImport(medication)}
+                    variant={imported ? "soft" : "primary"}
+                  >
+                    {imported ? "已导入演示药品" : "导入药品"}
+                  </Button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="mt-7">
+        <SectionTitle eyebrow="LEAFLET" title="达卫可说明书摘要" />
+        <div className="space-y-3">
+          {importedMedication.leafletSections.map((section, index) => {
+            const open = openLeafletIndex === index;
+            return (
+              <Card className="overflow-hidden" key={section.title}>
+                <button
+                  className="pressable flex w-full items-center justify-between gap-3 p-4 text-left"
+                  onClick={() => setOpenLeafletIndex(open ? -1 : index)}
+                  type="button"
+                >
+                  <div>
+                    <p className="text-[13px] font-black text-[#2D215F]">{section.title}</p>
+                    <p className="mt-1 text-[10px] font-semibold text-[#0388A6]">
+                      {section.source.shortLabel}
+                    </p>
+                  </div>
+                  <ChevronRightIcon
+                    className={`shrink-0 text-[#2D215F]/30 transition-transform ${open ? "rotate-90" : ""}`}
+                    size={18}
+                  />
+                </button>
+                {open ? (
+                  <div className="border-t border-[#2D215F]/7 px-4 pb-4 pt-3">
+                    <p className="text-[12px] leading-[1.8] text-[#2D215F]/68">{section.body}</p>
+                    <a
+                      className="mt-3 inline-flex text-[10px] font-bold text-[#BF047E]"
+                      href={section.source.url}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      查看来源
+                    </a>
+                  </div>
+                ) : null}
+              </Card>
+            );
+          })}
+        </div>
       </section>
 
       <section className="mt-7">
@@ -190,7 +299,7 @@ export default function MedicationPage({ onNavigate, onToast }) {
       </div>
 
       <ComplianceNote>
-        请遵循医生处方和药品说明书。本工具仅做提醒与记录，不提供剂量调整、停药或换药建议。
+        达卫可示例药品信息基于 FDA / DailyMed 公开资料整理，仅用于 Demo 演示。实际使用请遵循当地正式说明书、医生处方和药师指导。
       </ComplianceNote>
     </main>
   );
