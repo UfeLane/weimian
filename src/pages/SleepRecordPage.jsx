@@ -61,7 +61,7 @@ export default function SleepRecordPage({ onBack, onSaved }) {
       <form className="space-y-6" onSubmit={handleSubmit}>
         <Card className="space-y-5 p-5">
           <SectionTitle eyebrow="TIME" title="睡眠时间" />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
             <FormField label="上床时间">
               <Input defaultValue="23:20" type="time" />
             </FormField>
@@ -69,7 +69,7 @@ export default function SleepRecordPage({ onBack, onSaved }) {
               <Input defaultValue="06:50" type="time" />
             </FormField>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
             <FormField label="入睡耗时">
               <div className="relative">
                 <Input defaultValue="45" min="0" type="number" />
@@ -122,6 +122,10 @@ export default function SleepRecordPage({ onBack, onSaved }) {
             ))}
           </div>
         </Card>
+
+        <div className="rounded-[24px] border border-[#2D215F]/8 bg-white/80 px-4 py-3 text-[11px] leading-[1.7] text-[#2D215F]/58 shadow-[0_10px_24px_rgba(45,33,95,0.04)]">
+          连续记录 7 至 14 天，生成的好眠档案会更适合复诊时展示给医生。
+        </div>
 
         <Button className="w-full" type="submit">
           保存到好眠档案

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { medicationFaqs, sleepFaqs } from "../data";
+import { medicationFaqs, medicationProfile, sleepFaqs } from "../data";
 import { ChatIcon, ChevronRightIcon } from "../components/Icons";
 import { Card, ComplianceNote, PageHeader } from "../components/UI";
 
@@ -27,6 +27,25 @@ export default function FAQPage() {
           查阅睡眠记录方法与用药管理常见问题。涉及个体决策时，请咨询医生或药师。
         </p>
       </section>
+
+      <Card className="mt-4 border-[#BF047E]/10 bg-white/88 p-4">
+        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">你的当前关注点</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {[
+            `今晚 ${medicationProfile.currentMedication.reminderTime} 用药`,
+            `当前周期 ${medicationProfile.currentMedication.cycleDays} 天`,
+            `余量 ${medicationProfile.currentMedication.remainingTablets} 片`,
+            `有效期至 ${medicationProfile.currentMedication.expiresOn}`,
+          ].map((item) => (
+            <span
+              className="rounded-full bg-[#F2AEDB]/26 px-3 py-2 text-[11px] font-semibold text-[#BF046B]"
+              key={item}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+      </Card>
 
       <div className="mt-5 grid grid-cols-2 rounded-[18px] bg-[#2D215F]/6 p-1">
         {[
@@ -74,6 +93,9 @@ export default function FAQPage() {
                 </span>
                 <span className="flex-1 text-[13px] font-black text-[#2D215F]">
                   {item.question}
+                </span>
+                <span className="hidden rounded-full bg-[#F2F2F2] px-2 py-1 text-[9px] font-bold text-[#2D215F]/45 min-[400px]:inline-flex">
+                  {item.sourceLabel}
                 </span>
                 <ChevronRightIcon
                   className={`text-[#2D215F]/30 transition-transform ${open ? "rotate-90" : ""}`}

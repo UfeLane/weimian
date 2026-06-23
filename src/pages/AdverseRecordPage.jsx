@@ -103,11 +103,15 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
           </FormField>
           <FormField hint="选填" label="补充描述">
             <textarea
-              className="min-h-28 w-full resize-none rounded-2xl border border-[#2D215F]/10 bg-[#F2F2F2] p-4 text-sm leading-relaxed text-[#2D215F] outline-none transition placeholder:text-[#2D215F]/28 focus:border-[#0388A6]/50 focus:bg-white"
+              className="min-h-28 w-full resize-none rounded-[20px] border border-[#2D215F]/10 bg-[#F2F2F2] p-4 text-sm leading-relaxed text-[#2D215F] outline-none transition placeholder:text-[#2D215F]/28 focus:border-[#0388A6]/50 focus:bg-white"
               placeholder="例如：上午起床后感到困倦，午后有所缓解……"
             />
           </FormField>
         </Card>
+
+        <div className="rounded-[24px] border border-[#0388A6]/10 bg-white/82 px-4 py-3 text-[11px] leading-[1.7] text-[#2D215F]/58 shadow-[0_10px_24px_rgba(45,33,95,0.04)]">
+          建议把发生时间、持续多久、是否影响白天活动一起记录，复诊沟通会更清楚。
+        </div>
 
         <Button className="w-full" type="submit">
           保存不适记录

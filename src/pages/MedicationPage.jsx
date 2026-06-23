@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { medicationWeek } from "../data";
+import { medicationProfile, medicationWeek } from "../data";
 import {
   CheckIcon,
   ChevronRightIcon,
@@ -17,7 +17,8 @@ import {
 
 export default function MedicationPage({ onNavigate, onToast }) {
   const [checked, setChecked] = useState(false);
-  const [time, setTime] = useState("22:30");
+  const [time, setTime] = useState(medicationProfile.currentMedication.reminderTime);
+  const { patient, currentMedication } = medicationProfile;
 
   const handleCheck = () => {
     setChecked((value) => !value);
@@ -41,17 +42,40 @@ export default function MedicationPage({ onNavigate, onToast }) {
         title="我的用药"
       />
 
+      <div className="mb-4 rounded-[24px] border border-[#2D215F]/8 bg-white/78 p-4 shadow-[0_10px_24px_rgba(45,33,95,0.05)]">
+        <p className="text-[10px] font-bold tracking-[0.14em] text-[#0388A6]">当前周期</p>
+        <p className="mt-2 text-[13px] font-semibold leading-[1.7] text-[#2D215F]/72">
+          {patient.summary}
+        </p>
+      </div>
+
       <Card className="relative overflow-hidden border-0 bg-[linear-gradient(145deg,#0388A6_0%,#2D215F_100%)] p-5 text-white shadow-[0_18px_40px_rgba(3,136,166,0.2)]">
         <div className="absolute -right-8 -top-10 h-28 w-28 rounded-full border-[20px] border-white/8" />
         <div className="relative flex items-start justify-between gap-4">
           <div>
             <p className="text-[10px] font-bold tracking-[0.14em] text-white/60">TODAY</p>
-            <h2 className="mt-2 text-xl font-black">今晚 {time}</h2>
-            <p className="mt-1 text-xs text-white/65">{checked ? "今日已完成打卡" : "距计划时间还有一段时间"}</p>
+            <h2 className="mt-2 text-[24px] font-black tracking-[-0.04em]">今晚 {time}</h2>
+            <p className="mt-1 text-xs leading-relaxed text-white/68">
+              {checked ? "今日已完成打卡" : `当前为第 ${currentMedication.checkedInDays + 1} 天观察`}
+            </p>
           </div>
           <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/12">
             {checked ? <CheckIcon /> : <ClockIcon />}
           </span>
+        </div>
+        <div className="relative mt-5 grid grid-cols-3 gap-2">
+          <div className="rounded-2xl bg-white/10 px-3 py-3">
+            <p className="text-[9px] font-bold tracking-[0.1em] text-white/52">剂量</p>
+            <p className="mt-1 text-sm font-black">{currentMedication.dosage}</p>
+          </div>
+          <div className="rounded-2xl bg-white/10 px-3 py-3">
+            <p className="text-[9px] font-bold tracking-[0.1em] text-white/52">周期</p>
+            <p className="mt-1 text-sm font-black">{currentMedication.cycleDays} 天</p>
+          </div>
+          <div className="rounded-2xl bg-white/10 px-3 py-3">
+            <p className="text-[9px] font-bold tracking-[0.1em] text-white/52">余量</p>
+            <p className="mt-1 text-sm font-black">{currentMedication.remainingTablets} 片</p>
+          </div>
         </div>
         <Button
           className={`mt-5 w-full !shadow-none ${
@@ -72,10 +96,34 @@ export default function MedicationPage({ onNavigate, onToast }) {
             </span>
             <div className="min-w-0 flex-1">
               <span className="rounded-full bg-[#0388A6]/9 px-2.5 py-1 text-[9px] font-bold text-[#0388A6]">
-                示例药品
+                {currentMedication.tag}
               </span>
-              <h3 className="mt-2 text-[15px] font-black text-[#2D215F]">失眠处方药 A</h3>
-              <p className="mt-1 text-[11px] text-[#2D215F]/48">请按医生处方和说明书使用</p>
+              <h3 className="mt-2 text-[15px] font-black text-[#2D215F]">
+                {currentMedication.name}
+              </h3>
+              <p className="mt-1 text-[11px] leading-relaxed text-[#2D215F]/48">
+                {currentMedication.notes}
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
+              <p className="text-[10px] font-semibold text-[#2D215F]/42">开始时间</p>
+              <p className="mt-1 text-sm font-black text-[#2D215F]">{currentMedication.startedOn}</p>
+            </div>
+            <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
+              <p className="text-[10px] font-semibold text-[#2D215F]/42">补药提醒</p>
+              <p className="mt-1 text-sm font-black text-[#BF047E]">{currentMedication.refillDate}</p>
+            </div>
+            <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
+              <p className="text-[10px] font-semibold text-[#2D215F]/42">已使用</p>
+              <p className="mt-1 text-sm font-black text-[#0388A6]">
+                {currentMedication.usedTablets} 片
+              </p>
+            </div>
+            <div className="rounded-[18px] bg-[#F2F2F2] p-3.5">
+              <p className="text-[10px] font-semibold text-[#2D215F]/42">有效期</p>
+              <p className="mt-1 text-sm font-black text-[#2D215F]">{currentMedication.expiresOn}</p>
             </div>
           </div>
           <div className="mt-5 flex items-center justify-between rounded-2xl bg-[#F2F2F2] p-3.5">
