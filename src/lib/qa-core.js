@@ -1,4 +1,4 @@
-import { knowledgeBaseEntries, medicationProfile } from "../data";
+import { adverseRecords, knowledgeBaseEntries, medicationProfile, sleepDiaryHighlights } from "../data";
 
 function normalize(text) {
   return text.trim().toLowerCase();
@@ -23,6 +23,28 @@ function getDynamicProfileEntries() {
       question: "我用了多少药，还剩多少？",
       answer: `根据当前档案，你已使用 ${medicationProfile.currentMedication.usedTablets} 片，剩余 ${medicationProfile.currentMedication.remainingTablets} 片；补药提醒日期为 ${medicationProfile.currentMedication.refillDate}，有效期展示为 ${medicationProfile.currentMedication.expiresOn}。`,
       keywords: ["用了多少", "剩多少", "余量", "补药", "有效期", "过期"],
+      source: {
+        shortLabel: "当前档案",
+        url: "#internal-profile",
+      },
+    },
+    {
+      id: "profile-sleep-live",
+      category: "profile",
+      question: "我最近睡得怎么样？",
+      answer: `根据当前档案，${medicationProfile.patient.sleepSummary} 最近一次记录为 ${sleepDiaryHighlights[2].date}：上床 ${sleepDiaryHighlights[2].bedtime}，入睡耗时 ${sleepDiaryHighlights[2].sleepLatency}，夜间醒来 ${sleepDiaryHighlights[2].awakenings} 次。`,
+      keywords: ["最近睡得怎么样", "睡眠摘要", "最近一次记录", "入睡耗时", "夜间醒来"],
+      source: {
+        shortLabel: "当前档案",
+        url: "#internal-profile",
+      },
+    },
+    {
+      id: "profile-adverse-live",
+      category: "profile",
+      question: "我最近记录过哪些不适？",
+      answer: `根据当前档案，最近记录了 ${adverseRecords.length} 条不适：${adverseRecords.map((item) => `${item.date} ${item.symptom}`).join("、")}。当前都建议在复诊时结合发生时间、持续时长和对白天活动的影响一起沟通。`,
+      keywords: ["最近记录过哪些不适", "不适", "头晕", "嗜睡", "副作用记录"],
       source: {
         shortLabel: "当前档案",
         url: "#internal-profile",
@@ -90,6 +112,7 @@ export function buildKnowledgeContext(query) {
 
   return {
     profile: {
+      patientSummary: medicationProfile.patient.summary,
       medicationName: profile.name,
       brandName: profile.brandName,
       reminderTime: profile.reminderTime,
@@ -99,6 +122,11 @@ export function buildKnowledgeContext(query) {
       remainingTablets: profile.remainingTablets,
       refillDate: profile.refillDate,
       expiresOn: profile.expiresOn,
+      nextFollowUpOn: medicationProfile.patient.nextFollowUpOn,
+      recoveryGoal: medicationProfile.patient.recoveryGoal,
+      reviewFocus: medicationProfile.patient.reviewFocus,
+      recentSleepDiary: sleepDiaryHighlights,
+      recentAdverseRecords: adverseRecords,
     },
     snippets: candidates.map((item) => ({
       id: item.id,

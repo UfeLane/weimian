@@ -143,6 +143,11 @@ export const medicationProfile = {
       "白天嗜睡是否影响工作学习",
       "是否有漏服、补服或自行调整想法",
     ],
+    visitQuestions: [
+      "最近一周入睡耗时仍在 40 分钟左右，是否需要进一步评估？",
+      "周三漏服一次，应如何按说明书正确处理类似情况？",
+      "白天偶有嗜睡和头晕，需要重点观察哪些信息？",
+    ],
   },
   currentMedication: {
     ...medicationLibrary[0],
@@ -152,6 +157,61 @@ export const medicationProfile = {
     notes:
       "请按医生处方、当地正式说明书和药师建议使用；本 Demo 不提供加量、减量、停药或换药建议。",
   },
+};
+
+export const sleepDiaryHighlights = [
+  {
+    date: "2026.06.21",
+    bedtime: "23:18",
+    sleepLatency: "42 分钟",
+    awakenings: 2,
+    wakeTime: "06:42",
+    daytimeState: "上午困倦，午后恢复",
+  },
+  {
+    date: "2026.06.22",
+    bedtime: "23:05",
+    sleepLatency: "37 分钟",
+    awakenings: 1,
+    wakeTime: "06:36",
+    daytimeState: "精神较平稳",
+  },
+  {
+    date: "2026.06.23",
+    bedtime: "23:12",
+    sleepLatency: "46 分钟",
+    awakenings: 2,
+    wakeTime: "06:31",
+    daytimeState: "午后轻度犯困",
+  },
+];
+
+export const adverseRecords = [
+  {
+    date: "2026.06.20",
+    symptom: "嗜睡",
+    severity: "轻微",
+    impact: "午后短时注意力下降",
+    note: "下午开会时有点犯困，休息后缓解。",
+  },
+  {
+    date: "2026.06.22",
+    symptom: "头晕",
+    severity: "轻微",
+    impact: "起床后 10 分钟内明显",
+    note: "晨起时有点晕，饮水后缓解，没有持续加重。",
+  },
+];
+
+export const reportSummary = {
+  periodLabel: "2026.06.17 - 2026.06.23",
+  completionRate: 86,
+  averageSleepHours: "6.2",
+  averageSleepLatency: "42",
+  averageWakeups: "1.9",
+  medicationCheckIns: "6 / 7 天",
+  missedDoseNote: "周三记录 1 次漏服",
+  adverseRecordSummary: "嗜睡 1 次 · 头晕 1 次",
 };
 
 export const knowledgeBaseEntries = [
@@ -341,6 +401,24 @@ export const knowledgeBaseEntries = [
     question: "我最近睡得怎么样？",
     answer: `根据当前档案，${medicationProfile.patient.sleepSummary}`,
     keywords: ["最近睡得怎么样", "最近睡眠", "近7天", "睡眠摘要"],
+    source: sourceCatalog.internalProfile,
+  },
+  {
+    id: "profile-adverse-summary",
+    category: "profile",
+    question: "我最近记录过哪些不适？",
+    answer:
+      "根据当前档案，最近记录了 2 条不适：一次轻微嗜睡和一次轻微头晕，目前都建议在复诊时一起向医生说明发生时间、持续时长和对白天活动的影响。",
+    keywords: ["不适", "副作用记录", "头晕", "嗜睡", "最近记录"],
+    source: sourceCatalog.internalProfile,
+  },
+  {
+    id: "profile-visit-questions",
+    category: "profile",
+    question: "我准备复诊时最该带哪些问题？",
+    answer:
+      "根据当前档案，当前最值得优先沟通的是 3 件事：入睡耗时仍偏长、曾有 1 次漏服记录、以及白天偶有嗜睡和头晕。这些都适合带着睡眠日记一起讨论。",
+    keywords: ["复诊问题", "该带哪些问题", "最该问什么", "沟通重点"],
     source: sourceCatalog.internalProfile,
   },
 ];

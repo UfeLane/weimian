@@ -1,3 +1,4 @@
+import { adverseRecords, medicationProfile, reportSummary } from "../data";
 import {
   CheckIcon,
   DownloadIcon,
@@ -36,7 +37,7 @@ function WakeTrend() {
 export default function ReportPage({ onToast }) {
   return (
     <main className="page">
-      <PageHeader subtitle="2026.06.17 - 2026.06.23" title="好眠档案报告" />
+      <PageHeader subtitle={reportSummary.periodLabel} title="好眠档案报告" />
 
       <section className="relative overflow-hidden rounded-[30px] bg-[linear-gradient(145deg,#2D215F_0%,#0388A6_100%)] px-5 pb-6 pt-5 text-white shadow-[0_20px_44px_rgba(45,33,95,0.22)]">
         <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full border-[28px] border-[#F2AEDB]/10" />
@@ -45,12 +46,17 @@ export default function ReportPage({ onToast }) {
             <ReportIcon size={24} />
           </span>
           <p className="mt-5 text-[10px] font-bold tracking-[0.16em] text-white/55">WEEKLY SUMMARY</p>
-          <h2 className="mt-2 text-[28px] font-black tracking-[-0.05em]">本周记录完整度 86%</h2>
+          <h2 className="mt-2 text-[28px] font-black tracking-[-0.05em]">
+            本周记录完整度 {reportSummary.completionRate}%
+          </h2>
           <p className="mt-2 text-[12px] leading-[1.7] text-white/68">
-            已连续记录 6 天，可用于复诊时快速回顾睡眠与用药情况。
+            已连续记录 6 天，可用于复诊时快速回顾睡眠、用药与不适情况。
           </p>
           <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/12">
-            <div className="h-full w-[86%] rounded-full bg-[#F2AEDB]" />
+            <div
+              className="h-full rounded-full bg-[#F2AEDB]"
+              style={{ width: `${reportSummary.completionRate}%` }}
+            />
           </div>
         </div>
       </section>
@@ -63,7 +69,8 @@ export default function ReportPage({ onToast }) {
               平均入睡耗时
             </p>
             <p className="mt-2 text-[27px] font-black text-[#BF047E]">
-              42<span className="ml-1 text-[10px] text-[#2D215F]/40">分钟</span>
+              {reportSummary.averageSleepLatency}
+              <span className="ml-1 text-[10px] text-[#2D215F]/40">分钟</span>
             </p>
             <span className="mt-2 inline-flex rounded-full bg-[#F2AEDB]/28 px-2 py-1 text-[9px] font-bold text-[#BF046B]">
               较上周 -6 分钟
@@ -74,7 +81,8 @@ export default function ReportPage({ onToast }) {
               平均睡眠时长
             </p>
             <p className="mt-2 text-[27px] font-black text-[#0388A6]">
-              6.2<span className="ml-1 text-[10px] text-[#2D215F]/40">小时</span>
+              {reportSummary.averageSleepHours}
+              <span className="ml-1 text-[10px] text-[#2D215F]/40">小时</span>
             </p>
             <span className="mt-2 inline-flex rounded-full bg-[#0388A6]/9 px-2 py-1 text-[9px] font-bold text-[#0388A6]">
               记录 6 / 7 天
@@ -85,7 +93,11 @@ export default function ReportPage({ onToast }) {
 
       <section className="mt-7">
         <SectionTitle
-          action={<span className="text-[11px] font-bold text-[#0388A6]">平均 1.9 次</span>}
+          action={
+            <span className="text-[11px] font-bold text-[#0388A6]">
+              平均 {reportSummary.averageWakeups} 次
+            </span>
+          }
           eyebrow="WAKE TREND"
           title="夜间醒来次数"
         />
@@ -103,17 +115,19 @@ export default function ReportPage({ onToast }) {
             </span>
             <div className="flex-1">
               <p className="text-sm font-black text-[#2D215F]">用药打卡 6 / 7 天</p>
-              <p className="mt-1 text-[10px] text-[#2D215F]/45">周三记录 1 次漏服</p>
+              <p className="mt-1 text-[10px] text-[#2D215F]/45">{reportSummary.missedDoseNote}</p>
             </div>
-            <span className="text-lg font-black text-[#0388A6]">86%</span>
+            <span className="text-lg font-black text-[#0388A6]">{reportSummary.completionRate}%</span>
           </div>
           <div className="flex items-center gap-4 p-5">
             <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#F2AEDB]/32 text-[#BF047E]">
               <span className="text-base font-black">!</span>
             </span>
             <div className="flex-1">
-              <p className="text-sm font-black text-[#2D215F]">不适记录 2 条</p>
-              <p className="mt-1 text-[10px] text-[#2D215F]/45">嗜睡 1 次 · 头晕 1 次</p>
+              <p className="text-sm font-black text-[#2D215F]">不适记录 {adverseRecords.length} 条</p>
+              <p className="mt-1 text-[10px] text-[#2D215F]/45">
+                {reportSummary.adverseRecordSummary}
+              </p>
             </div>
             <span className="rounded-full bg-[#F2AEDB]/25 px-2.5 py-1 text-[9px] font-bold text-[#BF046B]">
               待沟通
@@ -125,11 +139,7 @@ export default function ReportPage({ onToast }) {
       <section className="mt-7">
         <SectionTitle eyebrow="VISIT CHECKLIST" title="复诊沟通问题清单" />
         <Card className="space-y-4 p-5">
-          {[
-            "最近一周入睡耗时仍在 40 分钟左右，是否需要进一步评估？",
-            "周三漏服一次，应如何按说明书正确处理类似情况？",
-            "白天偶有嗜睡和头晕，需要重点观察哪些信息？",
-          ].map((item, index) => (
+          {medicationProfile.patient.visitQuestions.map((item, index) => (
             <div className="flex gap-3" key={item}>
               <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#F2AEDB]/32 text-[10px] font-black text-[#BF047E]">
                 {index + 1}
