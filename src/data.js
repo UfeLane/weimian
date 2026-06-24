@@ -5,6 +5,18 @@ export const sourceCatalog = {
     url: "https://www.nhlbi.nih.gov/health/insomnia",
     accessedOn: "2026-06-23",
   },
+  nhlbiInsomniaTreatment: {
+    label: "NHLBI, NIH · Insomnia Treatment",
+    shortLabel: "NHLBI 治疗建议",
+    url: "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+    accessedOn: "2026-06-24",
+  },
+  nhlbiInsomniaLiving: {
+    label: "NHLBI, NIH · Living With Insomnia",
+    shortLabel: "NHLBI 长期管理",
+    url: "https://www.nhlbi.nih.gov/health/insomnia/living-with",
+    accessedOn: "2026-06-24",
+  },
   fdaDayvigoOverview: {
     label: "FDA Drugs@FDA · DAYVIGO (NDA 212028)",
     shortLabel: "FDA 审批页",
@@ -120,6 +132,17 @@ export const medicationProfile = {
   patient: {
     summary:
       "已在医生指导下于夜间服用助眠相关处方药，当前处于首个 14 天观察周期，重点关注入睡耗时、白天嗜睡和漏服情况。",
+    displayName: "演示患者 A",
+    nextFollowUpOn: "2026.07.03",
+    sleepSummary:
+      "近 7 日平均睡眠 6.2 小时，入睡耗时约 45 分钟，夜间平均醒来 2 次；近 3 日白天精神状态改善但仍偶有犯困。",
+    recoveryGoal: "希望先把入睡耗时稳定压到 30 分钟以内，并减少白天嗜睡。",
+    reviewFocus: [
+      "近 1 至 2 周睡眠日记",
+      "入睡耗时是否缩短",
+      "白天嗜睡是否影响工作学习",
+      "是否有漏服、补服或自行调整想法",
+    ],
   },
   currentMedication: {
     ...medicationLibrary[0],
@@ -151,8 +174,35 @@ export const knowledgeBaseEntries = [
     source: sourceCatalog.nhlbiInsomnia,
   },
   {
-    id: "sleep-prepare-visit",
+    id: "sleep-daytime-impact",
     category: "sleep",
+    question: "失眠为什么会影响白天状态？",
+    answer:
+      "NHLBI 提到，失眠会影响记忆、注意力和日间活动表现，也可能让人白天犯困、烦躁或思路不清。持续时间较长时，还可能增加其他健康风险。",
+    keywords: ["白天状态", "注意力", "记忆", "犯困", "影响"],
+    source: sourceCatalog.nhlbiInsomnia,
+  },
+  {
+    id: "sleep-healthy-habits",
+    category: "sleep",
+    question: "想改善睡眠，睡前习惯可以先改什么？",
+    answer:
+      "可先从规律作息、卧室保持安静偏暗偏凉、睡前少看电子屏幕、避免临睡前摄入咖啡因和酒精、减少午后小睡等习惯开始。NHLBI 也建议把运动安排在白天，而不要太靠近睡前。",
+    keywords: ["睡前", "习惯", "作息", "咖啡因", "酒精", "屏幕"],
+    source: sourceCatalog.nhlbiInsomniaTreatment,
+  },
+  {
+    id: "sleep-cbti",
+    category: "sleep",
+    question: "慢性失眠一般先考虑什么治疗？",
+    answer:
+      "NHLBI 将 CBT-I 视为长期失眠常见的一线治疗思路之一。它通常是一个 6 到 8 周的计划，目标是帮助更快入睡、减少对失眠的焦虑，并逐步建立稳定的睡眠节律。",
+    keywords: ["CBT-I", "认知行为治疗", "一线治疗", "慢性失眠"],
+    source: sourceCatalog.nhlbiInsomniaTreatment,
+  },
+  {
+    id: "sleep-prepare-visit",
+    category: "followup",
     question: "复诊前应该准备什么？",
     answer:
       "可准备近 1 至 2 周的睡眠记录、当前用药清单、出现过的不适和最想确认的 3 个问题。这样能让医生更快理解你的睡眠和用药变化。",
@@ -167,6 +217,33 @@ export const knowledgeBaseEntries = [
       "建议记录上床时间、估计入睡耗时、夜间醒来次数、起床时间、总睡眠时长，以及第二天的精神状态；连续记录比分钟级精确更重要。",
     keywords: ["睡眠日记", "记录", "怎么记", "夜里醒来"],
     source: sourceCatalog.nhlbiInsomnia,
+  },
+  {
+    id: "followup-contact-doctor",
+    category: "followup",
+    question: "复诊之间如果出现新情况，需要做什么？",
+    answer:
+      "NHLBI 建议在复诊之间，如果出现新的症状、原有症状加重，或者药物副作用变得明显，应及时联系医生，而不是等到下一次门诊时再统一处理。",
+    keywords: ["新情况", "症状加重", "副作用", "联系医生", "复诊之间"],
+    source: sourceCatalog.nhlbiInsomniaLiving,
+  },
+  {
+    id: "followup-keep-habits",
+    category: "followup",
+    question: "睡眠好转以后，还需要继续记录和管理吗？",
+    answer:
+      "NHLBI 提到，即使睡眠改善，也往往仍需要维持规律作息、坚持既定治疗方案，并视情况继续记录睡眠日记，以帮助观察是否复发或是否出现新的波动。",
+    keywords: ["好转以后", "继续记录", "复发", "长期管理"],
+    source: sourceCatalog.nhlbiInsomniaLiving,
+  },
+  {
+    id: "followup-questions",
+    category: "followup",
+    question: "复诊时可以优先问医生哪些问题？",
+    answer:
+      "可以优先围绕 4 类问题：这段时间睡眠是否有达到治疗预期、白天嗜睡或注意力下降是否与药物相关、当前用药是否需要继续观察、接下来需要继续记录哪些指标。",
+    keywords: ["问医生", "复诊问题", "该问什么", "治疗预期"],
+    source: sourceCatalog.nhlbiInsomniaLiving,
   },
   {
     id: "med-dayvigo-indication",
@@ -187,12 +264,39 @@ export const knowledgeBaseEntries = [
     source: sourceCatalog.fdaDayvigoOverview,
   },
   {
+    id: "med-dayvigo-how-to-take",
+    category: "medication",
+    question: "达卫可应该在什么时间吃？",
+    answer:
+      "FDA 标签建议在睡前立即服用，并确保离计划醒来时间至少还有 7 小时。如果与餐同服或餐后很快服用，可能会让起效时间变慢。",
+    keywords: ["什么时候吃", "睡前", "7小时", "餐后", "起效"],
+    source: sourceCatalog.fdaDayvigoLabel,
+  },
+  {
+    id: "med-dayvigo-contraindication",
+    category: "medication",
+    question: "达卫可有哪些不适合的情况？",
+    answer:
+      "DAYVIGO 的 FDA 标签列出 narcolepsy（发作性睡病）为禁忌情况。另外，如合并其他中枢抑制药物或存在特殊基础病，是否适合使用应由医生结合个体情况判断。",
+    keywords: ["禁忌", "不适合", "发作性睡病", "narcolepsy"],
+    source: sourceCatalog.fdaDayvigoLabel,
+  },
+  {
     id: "med-dayvigo-warning",
     category: "medication",
     question: "达卫可有什么重点风险提示？",
     answer:
       "FDA 标签提示需关注次日警觉性下降、嗜睡、复杂睡眠行为、睡眠瘫痪、幻觉样体验和抑郁加重等风险。若合并其他中枢抑制药物，风险可能上升。",
     keywords: ["风险", "警示", "副作用", "嗜睡", "复杂睡眠行为"],
+    source: sourceCatalog.fdaDayvigoLabel,
+  },
+  {
+    id: "med-dayvigo-common-side-effect",
+    category: "medication",
+    question: "达卫可标签里最常见的不良反应是什么？",
+    answer:
+      "FDA 标签列出的最常见不良反应是 somnolence，也就是嗜睡。如果你在程序内记录到明显白天犯困、反应慢或影响驾驶学习，应尽快和医生或药师沟通。",
+    keywords: ["不良反应", "嗜睡", "白天犯困", "somnolence"],
     source: sourceCatalog.fdaDayvigoLabel,
   },
   {
@@ -222,6 +326,23 @@ export const knowledgeBaseEntries = [
     keywords: ["用了多少", "剩多少", "余量", "补药", "有效期", "过期"],
     source: sourceCatalog.internalProfile,
   },
+  {
+    id: "profile-followup-date",
+    category: "profile",
+    question: "我的下一次复诊时间和关注点是什么？",
+    answer:
+      `根据当前档案，下一次复诊计划为 ${medicationProfile.patient.nextFollowUpOn}。当前建议重点带上睡眠日记，并反馈入睡耗时、白天嗜睡、漏服情况以及对达卫可耐受性的主观感受。`,
+    keywords: ["下一次复诊", "复诊时间", "关注点", "复诊"],
+    source: sourceCatalog.internalProfile,
+  },
+  {
+    id: "profile-sleep-summary",
+    category: "profile",
+    question: "我最近睡得怎么样？",
+    answer: `根据当前档案，${medicationProfile.patient.sleepSummary}`,
+    keywords: ["最近睡得怎么样", "最近睡眠", "近7天", "睡眠摘要"],
+    source: sourceCatalog.internalProfile,
+  },
 ];
 
 export const sleepFaqs = knowledgeBaseEntries.filter((item) => item.category === "sleep");
@@ -229,6 +350,38 @@ export const medicationFaqs = knowledgeBaseEntries.filter(
   (item) => item.category === "medication",
 );
 export const personalFaqs = knowledgeBaseEntries.filter((item) => item.category === "profile");
+export const followupFaqs = knowledgeBaseEntries.filter((item) => item.category === "followup");
+
+export const qaKnowledgeOverview = [
+  {
+    id: "sleep",
+    title: "睡眠知识",
+    value: `${sleepFaqs.length} 条`,
+    description: "失眠定义、睡眠日记、睡眠习惯与长期管理",
+    tone: "medical",
+  },
+  {
+    id: "medication",
+    title: "达卫可标签",
+    value: `${medicationFaqs.length} 条`,
+    description: "适应症、剂量、服用时机、风险提示与安全边界",
+    tone: "brand",
+  },
+  {
+    id: "profile",
+    title: "用户档案",
+    value: `${personalFaqs.length} 条`,
+    description: "周期天数、余量、提醒时间、有效期与近期睡眠摘要",
+    tone: "brand",
+  },
+  {
+    id: "followup",
+    title: "复诊准备",
+    value: `${followupFaqs.length} 条`,
+    description: "复诊前要带什么、期间何时联系医生、该问什么",
+    tone: "medical",
+  },
+];
 
 export const qaSuggestedPrompts = [
   "达卫可是治疗什么的？",
@@ -236,4 +389,6 @@ export const qaSuggestedPrompts = [
   "我用了多少药，还剩多少？",
   "睡眠日记应该怎么记？",
   "我能不能自己调整剂量？",
+  "我的下一次复诊时间和关注点是什么？",
+  "达卫可应该在什么时间吃？",
 ];

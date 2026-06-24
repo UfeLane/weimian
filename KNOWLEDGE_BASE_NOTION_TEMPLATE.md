@@ -74,7 +74,7 @@
 | 字段名 | 类型 | 用途 |
 | --- | --- | --- |
 | `问题` | Title | 标准问法 |
-| `分类` | Select | `sleep` `medication` `profile` |
+| `分类` | Select | `sleep` `medication` `profile` `followup` |
 | `答案` | Text | 用于展示或检索 |
 | `关键词` | Multi-select | 检索召回 |
 | `是否安全敏感` | Checkbox | 例如加量、停药 |
@@ -104,6 +104,8 @@
 | `有效期` | Date | 如 `2026-07-18` |
 | `近7天睡眠摘要` | Text | 程序内状态 |
 | `复诊关注点` | Text | 给 AI 联动回答 |
+| `下次复诊时间` | Date | 演示复诊安排 |
+| `当前目标` | Text | 例如缩短入睡耗时 |
 
 ## 推荐接法
 

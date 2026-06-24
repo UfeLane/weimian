@@ -8,6 +8,20 @@
       "accessedOn": "2026-06-23"
     },
     {
+      "id": "nhlbi-insomnia-treatment",
+      "label": "NHLBI, NIH · Insomnia Treatment",
+      "shortLabel": "NHLBI 治疗建议",
+      "url": "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+      "accessedOn": "2026-06-24"
+    },
+    {
+      "id": "nhlbi-insomnia-living",
+      "label": "NHLBI, NIH · Living With Insomnia",
+      "shortLabel": "NHLBI 长期管理",
+      "url": "https://www.nhlbi.nih.gov/health/insomnia/living-with",
+      "accessedOn": "2026-06-24"
+    },
+    {
       "id": "fda-dayvigo-overview",
       "label": "FDA Drugs@FDA · DAYVIGO (NDA 212028)",
       "shortLabel": "FDA 审批页",
@@ -33,7 +47,7 @@
       "label": "卫眠伴行 Demo · 当前用药档案",
       "shortLabel": "当前档案",
       "url": "#internal-profile",
-      "accessedOn": "2026-06-23"
+      "accessedOn": "2026-06-24"
     }
   ],
   "medications": [
@@ -44,10 +58,10 @@
       "genericName": "lemborexant",
       "manufacturer": "Eisai / 卫材",
       "indication": "治疗成人失眠，表现为入睡困难和/或睡眠维持困难。",
-      "doseSummary": "推荐起始 5 mg，每晚至多一次，睡前服用；可根据反应调整至 10 mg。",
+      "doseSummary": "推荐起始 5 mg，每晚至多一次，睡前立即服用；可根据反应和耐受性调整至 10 mg。",
       "strengths": ["5 mg", "10 mg"],
       "route": "片剂 / 口服",
-      "warnings": "需关注次日嗜睡、复杂睡眠行为、睡眠瘫痪和警觉性下降等风险。",
+      "warningSummary": "需关注次日嗜睡、警觉性下降、复杂睡眠行为、睡眠瘫痪和幻觉样体验等风险。",
       "commonAdverseReaction": "嗜睡",
       "sources": ["fda-dayvigo-overview", "fda-dayvigo-label", "dailymed-dayvigo"]
     }
@@ -62,6 +76,14 @@
       "sourceId": "nhlbi-insomnia"
     },
     {
+      "id": "sleep-healthy-habits",
+      "category": "sleep",
+      "question": "想改善睡眠，睡前习惯可以先改什么？",
+      "answer": "可先从规律作息、卧室保持安静偏暗偏凉、睡前少看电子屏幕、避免临睡前摄入咖啡因和酒精、减少午后小睡等习惯开始。",
+      "keywords": ["睡前", "习惯", "作息", "咖啡因", "酒精"],
+      "sourceId": "nhlbi-insomnia-treatment"
+    },
+    {
       "id": "med-dayvigo-indication",
       "category": "medication",
       "question": "达卫可是治疗什么的？",
@@ -70,12 +92,36 @@
       "sourceId": "fda-dayvigo-label"
     },
     {
-      "id": "profile-remaining",
+      "id": "med-dayvigo-how-to-take",
+      "category": "medication",
+      "question": "达卫可应该在什么时间吃？",
+      "answer": "FDA 标签建议在睡前立即服用，并确保离计划醒来时间至少还有 7 小时；与餐同服或餐后很快服用可能延迟起效。",
+      "keywords": ["什么时候吃", "睡前", "7小时", "餐后"],
+      "sourceId": "fda-dayvigo-label"
+    },
+    {
+      "id": "profile-followup-date",
       "category": "profile",
-      "question": "我用了多少药，还剩多少？",
-      "answer": "当前档案显示已使用 6 片，剩余 8 片，补药提醒日期为 2026.07.02。",
-      "keywords": ["用了多少", "剩多少", "余量"],
+      "question": "我的下一次复诊时间和关注点是什么？",
+      "answer": "根据当前档案，下一次复诊计划为 2026.07.03，建议带上睡眠日记，并反馈入睡耗时、白天嗜睡、漏服情况和药物耐受性。",
+      "keywords": ["下一次复诊", "复诊时间", "关注点"],
       "sourceId": "internal-profile"
+    },
+    {
+      "id": "followup-prepare-visit",
+      "category": "followup",
+      "question": "复诊前应该准备什么？",
+      "answer": "可准备近 1 至 2 周的睡眠记录、当前用药清单、出现过的不适和最想确认的 3 个问题。",
+      "keywords": ["复诊", "准备", "看医生", "带什么"],
+      "sourceId": "nhlbi-insomnia"
+    },
+    {
+      "id": "followup-contact-doctor",
+      "category": "followup",
+      "question": "复诊之间如果出现新情况，需要做什么？",
+      "answer": "如果出现新的症状、原有症状加重，或者药物副作用变得明显，应及时联系医生，而不是等到下一次门诊时再统一处理。",
+      "keywords": ["新情况", "症状加重", "副作用", "联系医生"],
+      "sourceId": "nhlbi-insomnia-living"
     }
   ],
   "demoProfile": {
@@ -87,6 +133,14 @@
     "usedTablets": 6,
     "remainingTablets": 8,
     "refillDate": "2026-07-02",
-    "expiresOn": "2026-07-18"
+    "expiresOn": "2026-07-18",
+    "nextFollowUpOn": "2026-07-03",
+    "sleepSummary": "近 7 日平均睡眠 6.2 小时，入睡耗时约 45 分钟，夜间平均醒来 2 次；近 3 日白天精神状态改善但仍偶有犯困。",
+    "reviewFocus": [
+      "近 1 至 2 周睡眠日记",
+      "入睡耗时是否缩短",
+      "白天嗜睡是否影响工作学习",
+      "是否有漏服或自行调整用药的想法"
+    ]
   }
 }

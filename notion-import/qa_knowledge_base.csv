@@ -1,0 +1,22 @@
+title,category,question,answer,keywords,source_label,source_url,safety_sensitive
+什么是失眠,sleep,什么是失眠？,失眠是一种常见睡眠障碍，即使有合适的睡眠时间和环境，仍然可能出现入睡困难、睡眠维持困难，或者睡眠质量不佳，并影响白天状态。,"失眠,定义,睡不着",NHLBI 失眠专题,https://www.nhlbi.nih.gov/health/insomnia,false
+短期失眠和长期失眠有什么区别,sleep,短期失眠和长期失眠有什么区别？,短期失眠常与压力、作息或环境变化相关，可持续数天到数周；慢性失眠通常每周 3 晚或以上、持续超过 3 个月，且不能完全由其他健康问题解释。,"短期,长期,慢性,几周,几个月",NHLBI 失眠专题,https://www.nhlbi.nih.gov/health/insomnia,false
+失眠为什么会影响白天状态,sleep,失眠为什么会影响白天状态？,失眠会影响记忆、注意力和日间活动表现，也可能让人白天犯困、烦躁或思路不清。持续时间较长时，还可能增加其他健康风险。,"白天状态,注意力,记忆,犯困,影响",NHLBI 失眠专题,https://www.nhlbi.nih.gov/health/insomnia,false
+想改善睡眠睡前习惯可以先改什么,sleep,想改善睡眠，睡前习惯可以先改什么？,可先从规律作息、卧室保持安静偏暗偏凉、睡前少看电子屏幕、避免临睡前摄入咖啡因和酒精、减少午后小睡等习惯开始。,"睡前,习惯,作息,咖啡因,酒精,屏幕",NHLBI 治疗建议,https://www.nhlbi.nih.gov/health/insomnia/treatment,false
+睡眠日记应该记录什么,sleep,睡眠日记应该记录什么？,建议记录上床时间、估计入睡耗时、夜间醒来次数、起床时间、总睡眠时长，以及第二天的精神状态；连续记录比分钟级精确更重要。,"睡眠日记,记录,怎么记,夜里醒来",NHLBI 失眠专题,https://www.nhlbi.nih.gov/health/insomnia,false
+慢性失眠一般先考虑什么治疗,sleep,慢性失眠一般先考虑什么治疗？,NHLBI 将 CBT-I 视为长期失眠常见的一线治疗思路之一。它通常是一个 6 到 8 周的计划，目标是帮助更快入睡并逐步建立稳定的睡眠节律。,"CBT-I,认知行为治疗,一线治疗,慢性失眠",NHLBI 治疗建议,https://www.nhlbi.nih.gov/health/insomnia/treatment,false
+复诊前应该准备什么,followup,复诊前应该准备什么？,可准备近 1 至 2 周的睡眠记录、当前用药清单、出现过的不适和最想确认的 3 个问题。这样能让医生更快理解你的睡眠和用药变化。,"复诊,准备,看医生,带什么",NHLBI 失眠专题,https://www.nhlbi.nih.gov/health/insomnia,false
+复诊之间如果出现新情况需要做什么,followup,复诊之间如果出现新情况，需要做什么？,如果出现新的症状、原有症状加重，或者药物副作用变得明显，应及时联系医生，而不是等到下一次门诊时再统一处理。,"新情况,症状加重,副作用,联系医生",NHLBI 长期管理,https://www.nhlbi.nih.gov/health/insomnia/living-with,false
+复诊时可以优先问医生哪些问题,followup,复诊时可以优先问医生哪些问题？,可以优先围绕睡眠是否达到预期、白天嗜睡是否与药物相关、当前方案是否继续观察，以及接下来需要继续记录哪些指标来提问。,"问医生,复诊问题,该问什么,治疗预期",NHLBI 长期管理,https://www.nhlbi.nih.gov/health/insomnia/living-with,false
+睡眠好转以后还需要继续记录和管理吗,followup,睡眠好转以后，还需要继续记录和管理吗？,即使睡眠改善，也往往仍需要维持规律作息、坚持既定治疗方案，并视情况继续记录睡眠日记，以帮助观察是否复发或出现新的波动。,"好转以后,继续记录,复发,长期管理",NHLBI 长期管理,https://www.nhlbi.nih.gov/health/insomnia/living-with,false
+达卫可是用来做什么的,medication,达卫可是用来做什么的？,根据 FDA 的 DAYVIGO 标签，lemborexant 用于治疗成人失眠，主要针对入睡困难和或睡眠维持困难。,"达卫可,DAYVIGO,适应症,治疗什么",FDA 标签 PDF,https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf,false
+达卫可的起始剂量和常见规格是什么,medication,达卫可的起始剂量和常见规格是什么？,推荐起始剂量是每晚 5 mg，睡前立即服用，且应确保离计划醒来至少还有 7 小时；可根据反应和耐受性调整到 10 mg。官方审批页显示常见规格为 5 mg 和 10 mg 片剂。,"剂量,5mg,10mg,规格,怎么吃,睡前",FDA 审批页,https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=212028,false
+达卫可应该在什么时间吃,medication,达卫可应该在什么时间吃？,FDA 标签建议在睡前立即服用，并确保离计划醒来时间至少还有 7 小时；如果与餐同服或餐后很快服用，可能会让起效时间变慢。,"什么时候吃,睡前,7小时,餐后,起效",FDA 标签 PDF,https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf,false
+达卫可有哪些不适合的情况,medication,达卫可有哪些不适合的情况？,DAYVIGO 的 FDA 标签列出 narcolepsy 发作性睡病为禁忌情况；其他个体化适用性需要由医生结合基础疾病和合并用药判断。,"禁忌,不适合,发作性睡病,narcolepsy",FDA 标签 PDF,https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf,false
+达卫可有什么重点风险提示,medication,达卫可有什么重点风险提示？,需关注次日警觉性下降、嗜睡、复杂睡眠行为、睡眠瘫痪、幻觉样体验和抑郁加重等风险。若合并其他中枢抑制药物，风险可能上升。,"风险,警示,副作用,嗜睡,复杂睡眠行为",FDA 标签 PDF,https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf,false
+达卫可标签里最常见的不良反应是什么,medication,达卫可标签里最常见的不良反应是什么？,FDA 标签列出的最常见不良反应是 somnolence 也就是嗜睡。如果记录到明显白天犯困或反应慢，应尽快和医生或药师沟通。,"不良反应,嗜睡,白天犯困,somnolence",FDA 标签 PDF,https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf,false
+我能不能自己加量减量或停药,medication,我能不能自己加量、减量或停药？,这类问题属于个体化诊疗决策。本 Demo 只展示标签和记录功能，不提供加量、减量、停药或换药建议。请严格遵循医生处方，并结合当地正式说明书、药师建议判断。,"加量,减量,停药,换药,自己调整,能不能吃两片",FDA 标签 PDF,https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/212028s000lbl.pdf,true
+我现在的用药周期到第几天了,profile,我现在的用药周期到第几天了？,根据当前档案，你处于首个 14 天观察周期的第 7 天，今晚提醒时间为 22:30。,"第几天,周期,提醒时间",当前档案,#internal-profile,false
+我用了多少药还剩多少,profile,我用了多少药，还剩多少？,根据当前档案，你已使用 6 片，剩余 8 片；系统中的补药提醒日期为 2026.07.02，有效期展示为 2026.07.18。,"用了多少,剩多少,余量,补药,有效期,过期",当前档案,#internal-profile,false
+我的下一次复诊时间和关注点是什么,profile,我的下一次复诊时间和关注点是什么？,根据当前档案，下一次复诊计划为 2026.07.03。当前建议重点带上睡眠日记，并反馈入睡耗时、白天嗜睡、漏服情况以及对达卫可耐受性的主观感受。,"下一次复诊,复诊时间,关注点,复诊",当前档案,#internal-profile,false
+我最近睡得怎么样,profile,我最近睡得怎么样？,根据当前档案，近 7 日平均睡眠 6.2 小时，入睡耗时约 45 分钟，夜间平均醒来 2 次；近 3 日白天精神状态改善但仍偶有犯困。,"最近睡得怎么样,最近睡眠,近7天,睡眠摘要",当前档案,#internal-profile,false
