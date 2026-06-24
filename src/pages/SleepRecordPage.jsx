@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CheckIcon } from "../components/Icons";
+import { medicationProfile, sleepDiaryHighlights } from "../data";
 import {
   Button,
   Card,
@@ -7,7 +8,9 @@ import {
   FormField,
   Input,
   PageHeader,
+  PatientSnapshotCard,
   SectionTitle,
+  TimelineList,
 } from "../components/UI";
 
 const factors = ["咖啡因", "酒精", "午睡", "屏幕使用", "压力"];
@@ -39,6 +42,19 @@ export default function SleepRecordPage({ onBack, onSaved }) {
         title="记录昨夜睡眠"
       />
 
+      <div className="mb-4">
+        <PatientSnapshotCard
+          accent="medical"
+          chips={[
+            `当前周期 ${medicationProfile.currentMedication.cycleDays} 天`,
+            `今晚 ${medicationProfile.currentMedication.reminderTime} 用药`,
+            `复诊 ${medicationProfile.patient.nextFollowUpOn}`,
+          ]}
+          summary={medicationProfile.patient.sleepSummary}
+          title="当前档案背景"
+        />
+      </div>
+
       <div className="mb-6 rounded-[24px] border border-[#BF047E]/10 bg-[#F2AEDB]/22 p-4">
         <p className="text-xs font-bold text-[#BF047E]">记录建议</p>
         <p className="mt-1.5 text-[11px] leading-relaxed text-[#2D215F]/60">
@@ -57,6 +73,20 @@ export default function SleepRecordPage({ onBack, onSaved }) {
           </p>
         </Card>
       ) : null}
+
+      <section className="mb-6">
+        <Card className="p-4">
+          <SectionTitle eyebrow="LATEST LOG" title="最近两次睡眠记录" />
+          <TimelineList
+            items={sleepDiaryHighlights.slice(1).map((item) => ({
+              id: item.date,
+              title: `${item.date} · 上床 ${item.bedtime}`,
+              meta: item.sleepLatency,
+              body: `夜间醒来 ${item.awakenings} 次，起床 ${item.wakeTime}，白天状态：${item.daytimeState}。`,
+            }))}
+          />
+        </Card>
+      </section>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         <Card className="space-y-5 p-5">

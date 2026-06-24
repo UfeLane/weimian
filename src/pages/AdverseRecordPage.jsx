@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AlertIcon, CheckIcon } from "../components/Icons";
+import { adverseRecords, medicationProfile } from "../data";
 import {
   Button,
   Card,
@@ -7,7 +8,9 @@ import {
   FormField,
   Input,
   PageHeader,
+  PatientSnapshotCard,
   SectionTitle,
+  TimelineList,
 } from "../components/UI";
 
 const symptomOptions = ["头晕", "嗜睡", "恶心", "疲惫", "其他"];
@@ -36,6 +39,19 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
     <main className="page">
       <PageHeader onBack={onBack} subtitle="只记录感受，不判断原因" title="不适记录" />
 
+      <div className="mb-4">
+        <PatientSnapshotCard
+          accent="medical"
+          chips={[
+            `当前药品 ${medicationProfile.currentMedication.name}`,
+            `提醒 ${medicationProfile.currentMedication.reminderTime}`,
+            `已记录不适 ${adverseRecords.length} 条`,
+          ]}
+          summary="这页记录会进入本周好眠档案摘要，并作为复诊沟通问题的一部分。"
+          title="记录会同步到哪里"
+        />
+      </div>
+
       <div className="mb-6 flex gap-3 rounded-[24px] border border-[#0388A6]/12 bg-[#0388A6]/7 p-4">
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[#0388A6] text-white">
           <AlertIcon size={19} />
@@ -61,6 +77,20 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
           </div>
         </Card>
       ) : null}
+
+      <section className="mb-6">
+        <Card className="p-4">
+          <SectionTitle eyebrow="RECENT RECORDS" title="最近已记录的不适" />
+          <TimelineList
+            items={adverseRecords.map((item) => ({
+              id: `${item.date}-${item.symptom}`,
+              title: `${item.date} · ${item.symptom}`,
+              meta: item.severity,
+              body: `${item.note} 影响：${item.impact}。`,
+            }))}
+          />
+        </Card>
+      </section>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         <Card className="p-5">
