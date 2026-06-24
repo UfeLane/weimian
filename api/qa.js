@@ -37,10 +37,10 @@ export default async function handler(req, res) {
     return;
   }
 
-  const context = buildKnowledgeContext(String(query));
+  const context = req.body?.context ?? buildKnowledgeContext(String(query));
   const model = process.env.OPENAI_QA_MODEL || "gpt-5.4-mini";
 
-  const systemPrompt = [
+  const instructions = [
     "你是卫眠伴行 Demo 中的 AI 问答助手。",
     "请只基于提供给你的知识片段和用户当前档案回答，不要编造未提供的信息。",
     "如果问题涉及加量、减量、停药、换药、补服等个体化用药决策，必须明确说明不能提供该建议，并建议遵循医生处方、正式说明书和药师指导。",
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     "如果知识片段不足以支持回答，要坦诚说明当前知识库没有明确答案。",
   ].join(" ");
 
-  const userPrompt = JSON.stringify(
+  const input = JSON.stringify(
     {
       question: query,
       currentProfile: context.profile,
@@ -66,10 +66,14 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify({
       model,
-      input: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
+      reasoning: { effort: "low" },
+      instructions,
+      input,
+      text: {
+        format: {
+          type: "text",
+        },
+      },
     }),
   });
 
