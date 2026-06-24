@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { medicationLibrary, medicationProfile, medicationWeek } from "../data";
+import { adverseRecords, medicationLibrary, medicationProfile, medicationWeek, sleepDiaryHighlights } from "../data";
 import {
   CheckIcon,
   ChevronRightIcon,
@@ -12,7 +12,9 @@ import {
   Card,
   ComplianceNote,
   PageHeader,
+  PatientSnapshotCard,
   SectionTitle,
+  TimelineList,
 } from "../components/UI";
 
 export default function MedicationPage({ onNavigate, onToast }) {
@@ -52,11 +54,17 @@ export default function MedicationPage({ onNavigate, onToast }) {
         title="我的用药"
       />
 
-      <div className="mb-4 rounded-[24px] border border-[#2D215F]/8 bg-white/78 p-4 shadow-[0_10px_24px_rgba(45,33,95,0.05)]">
-        <p className="text-[10px] font-bold tracking-[0.14em] text-[#0388A6]">当前周期</p>
-        <p className="mt-2 text-[13px] font-semibold leading-[1.7] text-[#2D215F]/72">
-          {patient.summary}
-        </p>
+      <div className="mb-4">
+        <PatientSnapshotCard
+          accent="medical"
+          chips={[
+            `复诊 ${patient.nextFollowUpOn}`,
+            `本周已打卡 ${currentMedication.usedTablets} 片`,
+            `待沟通不适 ${adverseRecords.length} 条`,
+          ]}
+          summary={patient.summary}
+          title="当前周期"
+        />
       </div>
 
       <Card className="relative overflow-hidden border-0 bg-[linear-gradient(145deg,#0388A6_0%,#2D215F_100%)] p-5 text-white shadow-[0_18px_40px_rgba(3,136,166,0.2)]">
@@ -248,6 +256,28 @@ export default function MedicationPage({ onNavigate, onToast }) {
             );
           })}
         </div>
+      </section>
+
+      <section className="mt-7">
+        <SectionTitle eyebrow="PROFILE LOG" title="最近记录回顾" />
+        <Card className="p-4">
+          <TimelineList
+            items={[
+              {
+                id: "sleep-latest",
+                title: `最近一次睡眠记录 · ${sleepDiaryHighlights[2].date}`,
+                meta: `${sleepDiaryHighlights[2].bedtime} 上床`,
+                body: `入睡耗时 ${sleepDiaryHighlights[2].sleepLatency}，夜间醒来 ${sleepDiaryHighlights[2].awakenings} 次，白天状态：${sleepDiaryHighlights[2].daytimeState}。`,
+              },
+              ...adverseRecords.map((item) => ({
+                id: `${item.date}-${item.symptom}`,
+                title: `${item.date} · ${item.symptom}`,
+                meta: item.severity,
+                body: `${item.note} 对白天活动影响：${item.impact}。`,
+              })),
+            ]}
+          />
+        </Card>
       </section>
 
       <section className="mt-7">

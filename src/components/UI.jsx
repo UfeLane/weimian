@@ -201,3 +201,70 @@ export function Toast({ message }) {
     </div>
   );
 }
+
+export function PatientSnapshotCard({
+  title = "当前档案快照",
+  summary,
+  chips = [],
+  accent = "brand",
+  action,
+}) {
+  const accentStyles =
+    accent === "medical"
+      ? {
+          eyebrow: "text-[#0388A6]",
+          chip: "bg-[#0388A6]/10 text-[#0388A6]",
+          border: "border-[#0388A6]/12",
+        }
+      : {
+          eyebrow: "text-[#BF047E]",
+          chip: "bg-[#F2AEDB]/26 text-[#BF046B]",
+          border: "border-[#BF047E]/10",
+        };
+
+  return (
+    <Card className={`${accentStyles.border} bg-white/88 p-4`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <p className={`text-[10px] font-bold tracking-[0.12em] ${accentStyles.eyebrow}`}>
+            {title}
+          </p>
+          <p className="mt-2 text-[12px] leading-[1.8] text-[#2D215F]/62">{summary}</p>
+        </div>
+        {action}
+      </div>
+      {chips.length ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {chips.map((item) => (
+            <span className={`rounded-full px-3 py-2 text-[10px] font-bold ${accentStyles.chip}`} key={item}>
+              {item}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </Card>
+  );
+}
+
+export function TimelineList({ items = [] }) {
+  return (
+    <div className="space-y-3">
+      {items.map((item) => (
+        <div className="flex gap-3" key={item.id ?? item.title}>
+          <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[#0388A6]" />
+          <div className="min-w-0 flex-1 rounded-[18px] bg-[#F2F2F2] px-3.5 py-3">
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-[11px] font-black text-[#2D215F]">{item.title}</p>
+              {item.meta ? (
+                <span className="shrink-0 text-[9px] font-bold text-[#2D215F]/38">{item.meta}</span>
+              ) : null}
+            </div>
+            {item.body ? (
+              <p className="mt-1.5 text-[10px] leading-[1.7] text-[#2D215F]/56">{item.body}</p>
+            ) : null}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

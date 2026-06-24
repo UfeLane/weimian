@@ -1,11 +1,13 @@
 import { useState } from "react";
 import {
+  adverseRecords,
   followupFaqs,
   medicationFaqs,
   medicationProfile,
   personalFaqs,
   qaKnowledgeOverview,
   qaSuggestedPrompts,
+  sleepDiaryHighlights,
   sleepFaqs,
 } from "../data";
 import { askDemoQa } from "../lib/qa";
@@ -17,7 +19,9 @@ import {
   ComplianceNote,
   Input,
   PageHeader,
+  PatientSnapshotCard,
   SectionTitle,
+  TimelineList,
 } from "../components/UI";
 
 const categoryMap = {
@@ -130,38 +134,23 @@ export default function FAQPage() {
         </div>
       </section>
 
-      <Card className="mt-6 border-[#BF047E]/10 bg-white/88 p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">当前档案快照</p>
-            <h3 className="mt-2 text-[16px] font-black text-[#2D215F]">
-              {medicationProfile.patient.displayName}
-            </h3>
-            <p className="mt-2 text-[11px] leading-[1.8] text-[#2D215F]/60">
-              {medicationProfile.patient.sleepSummary}
-            </p>
-          </div>
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#F2AEDB]/30 text-[#BF047E]">
-            <PillIcon size={22} />
-          </span>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {[
+      <div className="mt-6">
+        <PatientSnapshotCard
+          action={
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#F2AEDB]/30 text-[#BF047E]">
+              <PillIcon size={22} />
+            </span>
+          }
+          chips={[
             `今晚 ${medicationProfile.currentMedication.reminderTime} 用药`,
             `当前周期 ${medicationProfile.currentMedication.cycleDays} 天`,
             `已用 ${medicationProfile.currentMedication.usedTablets} 片`,
             `余量 ${medicationProfile.currentMedication.remainingTablets} 片`,
             `复诊 ${medicationProfile.patient.nextFollowUpOn}`,
-          ].map((item) => (
-            <span
-              className="rounded-full bg-[#F2AEDB]/26 px-3 py-2 text-[11px] font-semibold text-[#BF046B]"
-              key={item}
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-      </Card>
+          ]}
+          summary={`${medicationProfile.patient.displayName} · ${medicationProfile.patient.sleepSummary}`}
+        />
+      </div>
 
       <Card className="mt-4 p-4">
         <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">AI DEMO</p>
@@ -429,6 +418,28 @@ export default function FAQPage() {
               </div>
             ))}
           </div>
+        </Card>
+      </section>
+
+      <section className="mt-6">
+        <SectionTitle eyebrow="RECENT LOG" title="程序内最近记录" />
+        <Card className="p-4">
+          <TimelineList
+            items={[
+              {
+                id: "latest-sleep",
+                title: `睡眠记录 · ${sleepDiaryHighlights[2].date}`,
+                meta: sleepDiaryHighlights[2].sleepLatency,
+                body: `上床 ${sleepDiaryHighlights[2].bedtime}，夜间醒来 ${sleepDiaryHighlights[2].awakenings} 次，白天状态：${sleepDiaryHighlights[2].daytimeState}。`,
+              },
+              ...adverseRecords.map((item) => ({
+                id: `${item.date}-${item.symptom}`,
+                title: `不适记录 · ${item.symptom}`,
+                meta: item.date,
+                body: `${item.note} 影响：${item.impact}。`,
+              })),
+            ]}
+          />
         </Card>
       </section>
 
