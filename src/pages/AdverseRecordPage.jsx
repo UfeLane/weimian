@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { AlertIcon, CheckIcon } from "../components/Icons";
-import { adverseRecords, medicationProfile } from "../data";
 import {
   Button,
   Card,
@@ -15,11 +14,14 @@ import {
 
 const symptomOptions = ["头晕", "嗜睡", "恶心", "疲惫", "其他"];
 
-export default function AdverseRecordPage({ onBack, onSaved }) {
+export default function AdverseRecordPage({ demoRuntime, onBack, onSaved }) {
   const [symptoms, setSymptoms] = useState(["嗜睡"]);
   const [severity, setSeverity] = useState("轻微");
   const [impact, setImpact] = useState("否");
   const [saved, setSaved] = useState(false);
+  const [time, setTime] = useState("10:30");
+  const [note, setNote] = useState("");
+  const { adverseRecords, currentMedication } = demoRuntime;
 
   const toggleSymptom = (symptom) => {
     setSymptoms((current) =>
@@ -32,7 +34,13 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setSaved(true);
-    onSaved();
+    onSaved({
+      date: "2026.06.24",
+      symptom: symptoms[0] ?? "其他",
+      severity,
+      impact: impact === "是" ? "影响白天活动" : "未明显影响白天活动",
+      note: note || `记录时间 ${time}，主要感受为 ${symptoms.join("、")}。`,
+    });
   };
 
   return (
@@ -43,8 +51,8 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
         <PatientSnapshotCard
           accent="medical"
           chips={[
-            `当前药品 ${medicationProfile.currentMedication.name}`,
-            `提醒 ${medicationProfile.currentMedication.reminderTime}`,
+            `当前药品 ${currentMedication.name}`,
+            `提醒 ${currentMedication.reminderTime}`,
             `已记录不适 ${adverseRecords.length} 条`,
           ]}
           summary="这页记录会进入本周好眠档案摘要，并作为复诊沟通问题的一部分。"
@@ -120,7 +128,7 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
             </div>
           </FormField>
           <FormField label="发生时间">
-            <Input defaultValue="10:30" type="time" />
+            <Input onChange={(event) => setTime(event.target.value)} type="time" value={time} />
           </FormField>
           <FormField label="是否影响日间活动">
             <div className="grid grid-cols-1 gap-2 min-[360px]:grid-cols-2">
@@ -134,7 +142,9 @@ export default function AdverseRecordPage({ onBack, onSaved }) {
           <FormField hint="选填" label="补充描述">
             <textarea
               className="min-h-28 w-full resize-none rounded-[20px] border border-[#2D215F]/10 bg-[#F2F2F2] p-4 text-sm leading-relaxed text-[#2D215F] outline-none transition placeholder:text-[#2D215F]/28 focus:border-[#0388A6]/50 focus:bg-white"
+              onChange={(event) => setNote(event.target.value)}
               placeholder="例如：上午起床后感到困倦，午后有所缓解……"
+              value={note}
             />
           </FormField>
         </Card>

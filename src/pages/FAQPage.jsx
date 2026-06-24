@@ -53,7 +53,7 @@ const resultFollowups = [
   "复诊前应该准备什么？",
 ];
 
-export default function FAQPage() {
+export default function FAQPage({ demoRuntime }) {
   const [tab, setTab] = useState("sleep");
   const [openIndex, setOpenIndex] = useState(0);
   const [query, setQuery] = useState("");
@@ -66,7 +66,7 @@ export default function FAQPage() {
     if (!nextQuery.trim()) return;
     setQuery(nextQuery);
     setLoading(true);
-    const result = await askDemoQa(nextQuery);
+    const result = await askDemoQa(nextQuery, demoRuntime);
     setQaResult(result);
     setLoading(false);
   };

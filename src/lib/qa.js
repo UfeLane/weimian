@@ -1,14 +1,14 @@
 import { buildKnowledgeContext, getLocalQaResponse, getRelevantKnowledgeEntries } from "./qa-core";
 
-export async function askDemoQa(query) {
+export async function askDemoQa(query, runtimeData) {
   const mode = import.meta.env.VITE_QA_MODE ?? "local";
 
   if (mode === "local") {
-    return getLocalQaResponse(query);
+    return getLocalQaResponse(query, runtimeData);
   }
 
   const endpoint = import.meta.env.VITE_QA_API_BASE ?? "/api/qa";
-  const candidates = getRelevantKnowledgeEntries(query).slice(0, 3);
+  const candidates = getRelevantKnowledgeEntries(query, runtimeData).slice(0, 3);
 
   try {
     const response = await fetch(endpoint, {
@@ -18,7 +18,7 @@ export async function askDemoQa(query) {
       },
       body: JSON.stringify({
         query,
-        context: buildKnowledgeContext(query),
+        context: buildKnowledgeContext(query, runtimeData),
       }),
     });
 
@@ -34,7 +34,7 @@ export async function askDemoQa(query) {
       model: payload.model ?? null,
     };
   } catch (error) {
-    const fallback = getLocalQaResponse(query);
+    const fallback = getLocalQaResponse(query, runtimeData);
     return {
       ...fallback,
       mode: "local-fallback",

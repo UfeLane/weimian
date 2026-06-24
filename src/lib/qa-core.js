@@ -4,13 +4,23 @@ function normalize(text) {
   return text.trim().toLowerCase();
 }
 
-function getDynamicProfileEntries() {
+function getRuntimeData(runtimeData) {
+  return {
+    patient: runtimeData?.patient ?? medicationProfile.patient,
+    currentMedication: runtimeData?.currentMedication ?? medicationProfile.currentMedication,
+    sleepDiary: runtimeData?.sleepDiaryHighlights ?? sleepDiaryHighlights,
+    adverse: runtimeData?.adverseRecords ?? adverseRecords,
+  };
+}
+
+function getDynamicProfileEntries(runtimeData) {
+  const { currentMedication, patient, sleepDiary, adverse } = getRuntimeData(runtimeData);
   return [
     {
       id: "profile-cycle-live",
       category: "profile",
       question: "我现在的用药周期到第几天了？",
-      answer: `根据当前档案，你处于首个 ${medicationProfile.currentMedication.cycleDays} 天观察周期的第 ${medicationProfile.currentMedication.checkedInDays + 1} 天，今晚提醒时间为 ${medicationProfile.currentMedication.reminderTime}。`,
+      answer: `根据当前档案，你处于首个 ${currentMedication.cycleDays} 天观察周期的第 ${currentMedication.checkedInDays + 1} 天，今晚提醒时间为 ${currentMedication.reminderTime}。`,
       keywords: ["第几天", "周期", "提醒时间", "今天第几天"],
       source: {
         shortLabel: "当前档案",
@@ -21,7 +31,7 @@ function getDynamicProfileEntries() {
       id: "profile-remaining-live",
       category: "profile",
       question: "我用了多少药，还剩多少？",
-      answer: `根据当前档案，你已使用 ${medicationProfile.currentMedication.usedTablets} 片，剩余 ${medicationProfile.currentMedication.remainingTablets} 片；补药提醒日期为 ${medicationProfile.currentMedication.refillDate}，有效期展示为 ${medicationProfile.currentMedication.expiresOn}。`,
+      answer: `根据当前档案，你已使用 ${currentMedication.usedTablets} 片，剩余 ${currentMedication.remainingTablets} 片；补药提醒日期为 ${currentMedication.refillDate}，有效期展示为 ${currentMedication.expiresOn}。`,
       keywords: ["用了多少", "剩多少", "余量", "补药", "有效期", "过期"],
       source: {
         shortLabel: "当前档案",
@@ -32,7 +42,7 @@ function getDynamicProfileEntries() {
       id: "profile-sleep-live",
       category: "profile",
       question: "我最近睡得怎么样？",
-      answer: `根据当前档案，${medicationProfile.patient.sleepSummary} 最近一次记录为 ${sleepDiaryHighlights[2].date}：上床 ${sleepDiaryHighlights[2].bedtime}，入睡耗时 ${sleepDiaryHighlights[2].sleepLatency}，夜间醒来 ${sleepDiaryHighlights[2].awakenings} 次。`,
+      answer: `根据当前档案，${patient.sleepSummary} 最近一次记录为 ${sleepDiary[sleepDiary.length - 1].date}：上床 ${sleepDiary[sleepDiary.length - 1].bedtime}，入睡耗时 ${sleepDiary[sleepDiary.length - 1].sleepLatency}，夜间醒来 ${sleepDiary[sleepDiary.length - 1].awakenings} 次。`,
       keywords: ["最近睡得怎么样", "睡眠摘要", "最近一次记录", "入睡耗时", "夜间醒来"],
       source: {
         shortLabel: "当前档案",
@@ -43,7 +53,7 @@ function getDynamicProfileEntries() {
       id: "profile-adverse-live",
       category: "profile",
       question: "我最近记录过哪些不适？",
-      answer: `根据当前档案，最近记录了 ${adverseRecords.length} 条不适：${adverseRecords.map((item) => `${item.date} ${item.symptom}`).join("、")}。当前都建议在复诊时结合发生时间、持续时长和对白天活动的影响一起沟通。`,
+      answer: `根据当前档案，最近记录了 ${adverse.length} 条不适：${adverse.map((item) => `${item.date} ${item.symptom}`).join("、")}。当前都建议在复诊时结合发生时间、持续时长和对白天活动的影响一起沟通。`,
       keywords: ["最近记录过哪些不适", "不适", "头晕", "嗜睡", "副作用记录"],
       source: {
         shortLabel: "当前档案",
@@ -53,21 +63,21 @@ function getDynamicProfileEntries() {
   ];
 }
 
-export function getKnowledgeEntries() {
-  return [...knowledgeBaseEntries, ...getDynamicProfileEntries()];
+export function getKnowledgeEntries(runtimeData) {
+  return [...knowledgeBaseEntries, ...getDynamicProfileEntries(runtimeData)];
 }
 
-export function getRelevantKnowledgeEntries(query) {
+export function getRelevantKnowledgeEntries(query, runtimeData) {
   const cleaned = normalize(query);
   if (!cleaned) return [];
 
   const urgentSafetyMatch =
     /加量|减量|停药|换药|两片|翻倍|自己调整|能不能继续吃|还能不能吃/.test(cleaned);
   if (urgentSafetyMatch) {
-    return getKnowledgeEntries().filter((item) => item.id === "med-safety-adjust-dose");
+    return getKnowledgeEntries(runtimeData).filter((item) => item.id === "med-safety-adjust-dose");
   }
 
-  return getKnowledgeEntries()
+  return getKnowledgeEntries(runtimeData)
     .map((item) => {
       const haystack = `${item.question} ${item.answer} ${item.keywords.join(" ")}`.toLowerCase();
       let score = 0;
@@ -85,11 +95,11 @@ export function getRelevantKnowledgeEntries(query) {
     .map((entry) => entry.item);
 }
 
-export function getLocalQaResponse(query) {
+export function getLocalQaResponse(query, runtimeData) {
   const cleaned = normalize(query);
   if (!cleaned) return null;
 
-  const candidates = getRelevantKnowledgeEntries(query);
+  const candidates = getRelevantKnowledgeEntries(query, runtimeData);
   if (!candidates.length) {
     return {
       answer:
@@ -106,13 +116,13 @@ export function getLocalQaResponse(query) {
   };
 }
 
-export function buildKnowledgeContext(query) {
-  const candidates = getRelevantKnowledgeEntries(query).slice(0, 6);
-  const profile = medicationProfile.currentMedication;
+export function buildKnowledgeContext(query, runtimeData) {
+  const candidates = getRelevantKnowledgeEntries(query, runtimeData).slice(0, 6);
+  const { currentMedication: profile, patient, sleepDiary, adverse } = getRuntimeData(runtimeData);
 
   return {
     profile: {
-      patientSummary: medicationProfile.patient.summary,
+      patientSummary: patient.summary,
       medicationName: profile.name,
       brandName: profile.brandName,
       reminderTime: profile.reminderTime,
@@ -122,11 +132,11 @@ export function buildKnowledgeContext(query) {
       remainingTablets: profile.remainingTablets,
       refillDate: profile.refillDate,
       expiresOn: profile.expiresOn,
-      nextFollowUpOn: medicationProfile.patient.nextFollowUpOn,
-      recoveryGoal: medicationProfile.patient.recoveryGoal,
-      reviewFocus: medicationProfile.patient.reviewFocus,
-      recentSleepDiary: sleepDiaryHighlights,
-      recentAdverseRecords: adverseRecords,
+      nextFollowUpOn: patient.nextFollowUpOn,
+      recoveryGoal: patient.recoveryGoal,
+      reviewFocus: patient.reviewFocus,
+      recentSleepDiary: sleepDiary,
+      recentAdverseRecords: adverse,
     },
     snippets: candidates.map((item) => ({
       id: item.id,

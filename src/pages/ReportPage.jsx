@@ -1,4 +1,3 @@
-import { adverseRecords, medicationProfile, reportSummary } from "../data";
 import {
   CheckIcon,
   DownloadIcon,
@@ -34,7 +33,8 @@ function WakeTrend() {
   );
 }
 
-export default function ReportPage({ onToast }) {
+export default function ReportPage({ demoRuntime, onToast }) {
+  const { adverseRecords, patient, reportSummary } = demoRuntime;
   return (
     <main className="page">
       <PageHeader subtitle={reportSummary.periodLabel} title="好眠档案报告" />
@@ -114,7 +114,7 @@ export default function ReportPage({ onToast }) {
               <CheckIcon />
             </span>
             <div className="flex-1">
-              <p className="text-sm font-black text-[#2D215F]">用药打卡 6 / 7 天</p>
+              <p className="text-sm font-black text-[#2D215F]">用药打卡 {reportSummary.medicationCheckIns}</p>
               <p className="mt-1 text-[10px] text-[#2D215F]/45">{reportSummary.missedDoseNote}</p>
             </div>
             <span className="text-lg font-black text-[#0388A6]">{reportSummary.completionRate}%</span>
@@ -139,7 +139,7 @@ export default function ReportPage({ onToast }) {
       <section className="mt-7">
         <SectionTitle eyebrow="VISIT CHECKLIST" title="复诊沟通问题清单" />
         <Card className="space-y-4 p-5">
-          {medicationProfile.patient.visitQuestions.map((item, index) => (
+          {patient.visitQuestions.map((item, index) => (
             <div className="flex gap-3" key={item}>
               <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#F2AEDB]/32 text-[10px] font-black text-[#BF047E]">
                 {index + 1}

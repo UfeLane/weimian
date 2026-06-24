@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { CheckIcon } from "../components/Icons";
-import { medicationProfile, sleepDiaryHighlights } from "../data";
 import {
   Button,
   Card,
@@ -15,10 +14,16 @@ import {
 
 const factors = ["咖啡因", "酒精", "午睡", "屏幕使用", "压力"];
 
-export default function SleepRecordPage({ onBack, onSaved }) {
+export default function SleepRecordPage({ demoRuntime, onBack, onSaved }) {
   const [selectedFactors, setSelectedFactors] = useState(["屏幕使用"]);
   const [energy, setEnergy] = useState("一般");
   const [saved, setSaved] = useState(false);
+  const [bedtime, setBedtime] = useState("23:20");
+  const [wakeTime, setWakeTime] = useState("06:50");
+  const [sleepLatency, setSleepLatency] = useState("45");
+  const [awakenings, setAwakenings] = useState("2");
+  const [sleepHours, setSleepHours] = useState("6.2");
+  const { currentMedication, patient, sleepDiaryHighlights } = demoRuntime;
 
   const toggleFactor = (factor) => {
     setSelectedFactors((current) =>
@@ -31,7 +36,17 @@ export default function SleepRecordPage({ onBack, onSaved }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setSaved(true);
-    onSaved();
+    onSaved({
+      date: "2026.06.24",
+      bedtime,
+      sleepLatency: `${sleepLatency} 分钟`,
+      sleepLatencyMinutes: Number(sleepLatency),
+      awakenings: Number(awakenings),
+      wakeTime,
+      totalSleepHours: Number(sleepHours),
+      daytimeState: energy === "较差" ? "白天状态较差" : energy === "较好" ? "精神较好" : "精神一般",
+      factors: selectedFactors,
+    });
   };
 
   return (
@@ -46,11 +61,11 @@ export default function SleepRecordPage({ onBack, onSaved }) {
         <PatientSnapshotCard
           accent="medical"
           chips={[
-            `当前周期 ${medicationProfile.currentMedication.cycleDays} 天`,
-            `今晚 ${medicationProfile.currentMedication.reminderTime} 用药`,
-            `复诊 ${medicationProfile.patient.nextFollowUpOn}`,
+            `当前周期 ${currentMedication.cycleDays} 天`,
+            `今晚 ${currentMedication.reminderTime} 用药`,
+            `复诊 ${patient.nextFollowUpOn}`,
           ]}
-          summary={medicationProfile.patient.sleepSummary}
+          summary={patient.sleepSummary}
           title="当前档案背景"
         />
       </div>
@@ -93,16 +108,16 @@ export default function SleepRecordPage({ onBack, onSaved }) {
           <SectionTitle eyebrow="TIME" title="睡眠时间" />
           <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
             <FormField label="上床时间">
-              <Input defaultValue="23:20" type="time" />
+              <Input onChange={(event) => setBedtime(event.target.value)} type="time" value={bedtime} />
             </FormField>
             <FormField label="起床时间">
-              <Input defaultValue="06:50" type="time" />
+              <Input onChange={(event) => setWakeTime(event.target.value)} type="time" value={wakeTime} />
             </FormField>
           </div>
           <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
             <FormField label="入睡耗时">
               <div className="relative">
-                <Input defaultValue="45" min="0" type="number" />
+                <Input min="0" onChange={(event) => setSleepLatency(event.target.value)} type="number" value={sleepLatency} />
                 <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-[#2D215F]/40">
                   分钟
                 </span>
@@ -110,7 +125,7 @@ export default function SleepRecordPage({ onBack, onSaved }) {
             </FormField>
             <FormField label="夜间醒来">
               <div className="relative">
-                <Input defaultValue="2" min="0" type="number" />
+                <Input min="0" onChange={(event) => setAwakenings(event.target.value)} type="number" value={awakenings} />
                 <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-[#2D215F]/40">
                   次
                 </span>
@@ -119,7 +134,7 @@ export default function SleepRecordPage({ onBack, onSaved }) {
           </div>
           <FormField hint="估算即可" label="总睡眠时长">
             <div className="relative">
-              <Input defaultValue="6.2" min="0" step="0.1" type="number" />
+              <Input min="0" onChange={(event) => setSleepHours(event.target.value)} step="0.1" type="number" value={sleepHours} />
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-[#2D215F]/40">
                 小时
               </span>

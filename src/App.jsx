@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BottomNav, Toast } from "./components/UI";
+import { buildDemoRuntime, buildInitialDemoState } from "./demo-state";
+import { medicationLibrary } from "./data";
 import AdverseRecordPage from "./pages/AdverseRecordPage";
 import FAQPage from "./pages/FAQPage";
 import HomePage from "./pages/HomePage";
@@ -13,7 +15,9 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [previousPage, setPreviousPage] = useState("home");
   const [toast, setToast] = useState("");
+  const [demoState, setDemoState] = useState(buildInitialDemoState);
   const contentRef = useRef(null);
+  const demoRuntime = buildDemoRuntime(demoState);
 
   const navigate = (nextPage) => {
     setPreviousPage(page);
@@ -23,6 +27,45 @@ export default function App() {
 
   const showToast = (message) => {
     setToast(message);
+  };
+
+  const saveSleepRecord = (record) => {
+    setDemoState((current) => ({
+      ...current,
+      sleepDiaryHighlights: [...current.sleepDiaryHighlights.slice(-2), record],
+    }));
+    showToast("睡眠记录已保存到好眠档案");
+  };
+
+  const saveAdverseRecord = (record) => {
+    setDemoState((current) => ({
+      ...current,
+      adverseRecords: [...current.adverseRecords, record].slice(-5),
+    }));
+    showToast("记录已保存。若症状明显或持续，请及时咨询医生或药师。");
+  };
+
+  const updateReminderTime = (time) => {
+    setDemoState((current) => ({
+      ...current,
+      reminderTime: time,
+    }));
+  };
+
+  const importMedication = (medicationId) => {
+    const medication = medicationLibrary.find((item) => item.id === medicationId);
+    setDemoState((current) => ({
+      ...current,
+      importedMedicationId: medicationId,
+      reminderTime: medication?.reminderTime ?? current.reminderTime,
+    }));
+  };
+
+  const toggleMedicationCheck = () => {
+    setDemoState((current) => ({
+      ...current,
+      todayMedicationDone: !current.todayMedicationDone,
+    }));
   };
 
   useEffect(() => {
@@ -41,27 +84,36 @@ export default function App() {
   if (page === "sleep") {
     content = (
       <SleepRecordPage
+        demoRuntime={demoRuntime}
         onBack={() => navigate(previousPage)}
-        onSaved={() => showToast("睡眠记录已保存到好眠档案")}
+        onSaved={saveSleepRecord}
       />
     );
   } else if (page === "medication") {
-    content = <MedicationPage onNavigate={navigate} onToast={showToast} />;
+    content = (
+      <MedicationPage
+        demoRuntime={demoRuntime}
+        onImportMedication={importMedication}
+        onNavigate={navigate}
+        onToggleCheck={toggleMedicationCheck}
+        onToast={showToast}
+        onUpdateReminderTime={updateReminderTime}
+      />
+    );
   } else if (page === "adverse") {
     content = (
       <AdverseRecordPage
+        demoRuntime={demoRuntime}
         onBack={() => navigate(previousPage)}
-        onSaved={() =>
-          showToast("记录已保存。若症状明显或持续，请及时咨询医生或药师。")
-        }
+        onSaved={saveAdverseRecord}
       />
     );
   } else if (page === "report") {
-    content = <ReportPage onToast={showToast} />;
+    content = <ReportPage demoRuntime={demoRuntime} onToast={showToast} />;
   } else if (page === "faq") {
-    content = <FAQPage />;
+    content = <FAQPage demoRuntime={demoRuntime} />;
   } else {
-    content = <HomePage onNavigate={navigate} onToast={showToast} />;
+    content = <HomePage demoRuntime={demoRuntime} onNavigate={navigate} onToast={showToast} />;
   }
 
   return (

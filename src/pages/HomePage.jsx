@@ -1,4 +1,4 @@
-import { medicationProfile, reportSummary, sleepStats, weeklySleep } from "../data";
+import { weeklySleep } from "../data";
 import {
   AlertIcon,
   ChevronRightIcon,
@@ -12,6 +12,7 @@ import {
   Card,
   ComplianceNote,
   PageHeader,
+  PatientSnapshotCard,
   SectionTitle,
 } from "../components/UI";
 
@@ -74,10 +75,11 @@ function TrendChart() {
   );
 }
 
-export default function HomePage({ onNavigate, onToast }) {
+export default function HomePage({ demoRuntime, onNavigate, onToast }) {
+  const { currentMedication, patient, reportSummary, sleepStats, adverseRecords } = demoRuntime;
   const quickActions = [
     { label: "记录睡眠", sub: "补充昨夜情况", Icon: MoonLogIcon, page: "sleep" },
-    { label: "用药打卡", sub: "今晚 22:30", Icon: PillIcon, page: "medication" },
+    { label: "用药打卡", sub: `今晚 ${currentMedication.reminderTime}`, Icon: PillIcon, page: "medication" },
     { label: "不适记录", sub: "记录身体感受", Icon: AlertIcon, page: "adverse" },
     { label: "生成报告", sub: "近 7 天档案", Icon: ReportIcon, page: "report" },
   ];
@@ -132,7 +134,7 @@ export default function HomePage({ onNavigate, onToast }) {
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-bold tracking-[0.12em] text-white/65">今日用药提醒</p>
             <p className="mt-1 text-[18px] font-black tracking-[-0.03em]">
-              今晚 {medicationProfile.currentMedication.reminderTime} · 待打卡
+              今晚 {currentMedication.reminderTime} · 待打卡
             </p>
           </div>
           <button
@@ -166,26 +168,17 @@ export default function HomePage({ onNavigate, onToast }) {
         </div>
       </section>
 
-      <Card className="mt-4 border-[#BF047E]/10 bg-white/88 p-4">
-        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">当前档案焦点</p>
-        <p className="mt-2 text-[12px] leading-[1.8] text-[#2D215F]/62">
-          {medicationProfile.patient.sleepSummary}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {[
-            `复诊 ${medicationProfile.patient.nextFollowUpOn}`,
+      <div className="mt-4">
+        <PatientSnapshotCard
+          chips={[
+            `复诊 ${patient.nextFollowUpOn}`,
             `本周完整度 ${reportSummary.completionRate}%`,
-            `已记录不适 2 条`,
-          ].map((item) => (
-            <span
-              className="rounded-full bg-[#F2AEDB]/26 px-3 py-2 text-[10px] font-bold text-[#BF046B]"
-              key={item}
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-      </Card>
+            `已记录不适 ${adverseRecords.length} 条`,
+          ]}
+          summary={patient.sleepSummary}
+          title="当前档案焦点"
+        />
+      </div>
 
       <section className="mt-7">
         <SectionTitle eyebrow="QUICK ACCESS" title="快速记录" />

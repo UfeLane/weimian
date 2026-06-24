@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { adverseRecords, medicationLibrary, medicationProfile, medicationWeek, sleepDiaryHighlights } from "../data";
+import { medicationLibrary } from "../data";
 import {
   CheckIcon,
   ChevronRightIcon,
@@ -17,23 +17,26 @@ import {
   TimelineList,
 } from "../components/UI";
 
-export default function MedicationPage({ onNavigate, onToast }) {
-  const [checked, setChecked] = useState(false);
-  const [time, setTime] = useState(medicationProfile.currentMedication.reminderTime);
-  const [importedMedicationId, setImportedMedicationId] = useState(medicationProfile.currentMedication.id);
+export default function MedicationPage({
+  demoRuntime,
+  onImportMedication,
+  onNavigate,
+  onToggleCheck,
+  onToast,
+  onUpdateReminderTime,
+}) {
   const [openLeafletIndex, setOpenLeafletIndex] = useState(0);
-  const { patient, currentMedication } = medicationProfile;
-  const importedMedication =
-    medicationLibrary.find((item) => item.id === importedMedicationId) ?? medicationLibrary[0];
+  const { adverseRecords, currentMedication, importedMedication, medicationWeek, patient, sleepDiaryHighlights } =
+    demoRuntime;
 
   const handleCheck = () => {
-    setChecked((value) => !value);
-    onToast(checked ? "已撤销今日打卡" : "已完成今日用药打卡");
+    onToggleCheck();
+    onToast(demoRuntime.currentMedication.checkedInDays > importedMedication.checkedInDays ? "已撤销今日打卡" : "已完成今日用药打卡");
   };
 
   const handleImport = (medication) => {
-    setImportedMedicationId(medication.id);
-    setTime(medication.reminderTime);
+    onImportMedication(medication.id);
+    onUpdateReminderTime(medication.reminderTime);
     onToast(`已导入 ${medication.brandName} 演示药品与说明书`);
   };
 
@@ -72,13 +75,17 @@ export default function MedicationPage({ onNavigate, onToast }) {
         <div className="relative flex items-start justify-between gap-4">
           <div>
             <p className="text-[10px] font-bold tracking-[0.14em] text-white/60">TODAY</p>
-            <h2 className="mt-2 text-[24px] font-black tracking-[-0.04em]">今晚 {time}</h2>
+            <h2 className="mt-2 text-[24px] font-black tracking-[-0.04em]">
+              今晚 {currentMedication.reminderTime}
+            </h2>
             <p className="mt-1 text-xs leading-relaxed text-white/68">
-              {checked ? "今日已完成打卡" : `当前为第 ${currentMedication.checkedInDays + 1} 天观察`}
+              {demoRuntime.currentMedication.checkedInDays > importedMedication.checkedInDays
+                ? "今日已完成打卡"
+                : `当前为第 ${currentMedication.checkedInDays + 1} 天观察`}
             </p>
           </div>
           <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/12">
-            {checked ? <CheckIcon /> : <ClockIcon />}
+            {demoRuntime.currentMedication.checkedInDays > importedMedication.checkedInDays ? <CheckIcon /> : <ClockIcon />}
           </span>
         </div>
         <div className="relative mt-5 grid grid-cols-3 gap-2">
@@ -97,11 +104,15 @@ export default function MedicationPage({ onNavigate, onToast }) {
         </div>
         <Button
           className={`mt-5 w-full !shadow-none ${
-            checked ? "!bg-white/12 !text-white" : "!bg-white !text-[#0388A6]"
+            demoRuntime.currentMedication.checkedInDays > importedMedication.checkedInDays
+              ? "!bg-white/12 !text-white"
+              : "!bg-white !text-[#0388A6]"
           }`}
           onClick={handleCheck}
         >
-          {checked ? "已打卡，点击撤销" : "完成今日用药打卡"}
+          {demoRuntime.currentMedication.checkedInDays > importedMedication.checkedInDays
+            ? "已打卡，点击撤销"
+            : "完成今日用药打卡"}
         </Button>
       </Card>
 
@@ -154,9 +165,9 @@ export default function MedicationPage({ onNavigate, onToast }) {
             </div>
             <input
               className="w-[82px] bg-transparent text-right text-sm font-black text-[#0388A6] outline-none"
-              onChange={(event) => setTime(event.target.value)}
+              onChange={(event) => onUpdateReminderTime(event.target.value)}
               type="time"
-              value={time}
+              value={currentMedication.reminderTime}
             />
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -179,7 +190,7 @@ export default function MedicationPage({ onNavigate, onToast }) {
         <SectionTitle eyebrow="IMPORT" title="演示药品导入" />
         <div className="space-y-3">
           {medicationLibrary.map((medication) => {
-            const imported = medication.id === importedMedicationId;
+            const imported = medication.id === importedMedication.id;
             return (
               <Card className="p-4" key={medication.id}>
                 <div className="flex items-start gap-3">
