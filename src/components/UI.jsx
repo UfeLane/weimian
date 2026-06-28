@@ -163,7 +163,7 @@ export function BottomNav({ active, onNavigate }) {
   ];
 
   return (
-    <nav className="mini-bottom-nav z-30 shrink-0 border-t border-[#2D215F]/8 bg-white/95 px-3 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_36px_rgba(45,33,95,0.07)] backdrop-blur-xl">
+    <nav className="mini-bottom-nav z-30 mx-2 mb-2 shrink-0 rounded-[28px] border border-white/72 bg-white/92 px-3 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_18px_40px_rgba(45,33,95,0.12)] backdrop-blur-xl">
       <div className="grid grid-cols-4">
         {tabs.map(({ id, label, Icon }) => {
           const isActive = active === id;
@@ -205,7 +205,7 @@ export function Toast({ message }) {
 export function DoctorFloatButton({ onClick }) {
   return (
     <button
-      className="pressable absolute bottom-[calc(92px+env(safe-area-inset-bottom))] right-4 z-40 flex items-center gap-3 rounded-full border border-[#F2AEDB]/70 bg-white/96 px-3 py-3 shadow-[0_20px_40px_rgba(45,33,95,0.16)] backdrop-blur-xl"
+      className="pressable absolute bottom-[calc(106px+env(safe-area-inset-bottom))] right-4 z-40 flex items-center gap-3 rounded-full border border-[#F2AEDB]/70 bg-white/96 px-3 py-3 shadow-[0_20px_40px_rgba(45,33,95,0.16)] backdrop-blur-xl"
       onClick={onClick}
       type="button"
     >

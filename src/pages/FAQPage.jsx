@@ -152,6 +152,20 @@ export default function FAQPage({ demoRuntime }) {
             </button>
           ))}
         </div>
+        <div className="mt-4 grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
+          <div className="rounded-[18px] bg-[#F2F2F2] px-4 py-3">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">推荐演示 01</p>
+            <p className="mt-1 text-[11px] font-semibold leading-[1.7] text-[#2D215F]/62">
+              先问标签知识，再追问“我现在用了多少药、什么时候复诊”。
+            </p>
+          </div>
+          <div className="rounded-[18px] bg-[#F2F2F2] px-4 py-3">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">推荐演示 02</p>
+            <p className="mt-1 text-[11px] font-semibold leading-[1.7] text-[#2D215F]/62">
+              追问会带上程序内档案，更容易展示“外部知识 + 内部数据”差异。
+            </p>
+          </div>
+        </div>
       </Card>
 
       {qaResult ? (

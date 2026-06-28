@@ -14,16 +14,16 @@
   --surface: #ffffff;
   --background: #f2f2f2;
   --ink: #2d215f;
-  --device-max-width: 430px;
+  --device-max-width: 432px;
   --page-gutter: 18px;
-  --page-bottom-gap: 28px;
+  --page-bottom-gap: 112px;
   --radius-card: 24px;
   --radius-control: 18px;
   --radius-panel: 20px;
   --control-height: 46px;
   --chip-height: 38px;
   --nav-item-height: 58px;
-  --nav-toast-offset: 82px;
+  --nav-toast-offset: 108px;
 }
 
 * {
@@ -81,6 +81,21 @@ button {
   margin: 0 auto;
   overflow: hidden;
   background: #f2f2f2;
+  isolation: isolate;
+}
+
+.phone::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  z-index: 20;
+  height: 22px;
+  width: 132px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgb(45 33 95 / 12%);
+  pointer-events: none;
 }
 
 .phone-content {
@@ -89,13 +104,13 @@ button {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  scroll-padding-bottom: 24px;
+  scroll-padding-bottom: 140px;
 }
 
 .page {
   min-height: 100%;
   padding:
-    max(12px, env(safe-area-inset-top)) var(--page-gutter)
+    max(40px, calc(env(safe-area-inset-top) + 28px)) var(--page-gutter)
     var(--page-bottom-gap);
   animation: page-in 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -191,17 +206,21 @@ button {
     border-radius: 42px;
     box-shadow: 0 28px 80px rgb(45 33 95 / 20%);
   }
-
-  .page {
-    min-height: 100%;
-  }
 }
 
 @media (max-width: 389px) {
   :root {
     --page-gutter: 14px;
-    --page-bottom-gap: 22px;
+    --page-bottom-gap: 104px;
     --radius-card: 22px;
     --radius-control: 16px;
+  }
+
+  .page {
+    padding-top: max(34px, calc(env(safe-area-inset-top) + 22px));
+  }
+
+  .phone::before {
+    width: 120px;
   }
 }

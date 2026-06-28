@@ -42,6 +42,11 @@ function buildCalendar(startedOn, medicationWeek, todayDone) {
   });
 }
 
+function formatMonthLabel(startedOn) {
+  const [year, month] = startedOn.split(".").map(Number);
+  return `${year}.${String(month).padStart(2, "0")}`;
+}
+
 export default function MedicationPage({
   demoRuntime,
   onImportMedication,
@@ -51,6 +56,7 @@ export default function MedicationPage({
 }) {
   const { adverseRecords, currentMedication, importedMedication, medicationWeek, patient } =
     demoRuntime;
+  const monthLabel = formatMonthLabel(importedMedication.startedOn);
   const calendarDays = buildCalendar(
     importedMedication.startedOn,
     medicationWeek,
@@ -64,7 +70,6 @@ export default function MedicationPage({
 
   const handleImport = (medication) => {
     onImportMedication(medication.id);
-    onUpdateReminderTime(medication.reminderTime);
     onToast(`已导入 ${medication.brandName} 演示药品与说明书`);
   };
 
@@ -99,9 +104,17 @@ export default function MedicationPage({
       </div>
 
       <section className="mt-6">
-        <SectionTitle eyebrow="CALENDAR" title="本月用药日历" />
+        <SectionTitle
+          action={<span className="text-[11px] font-bold text-[#0388A6]">{monthLabel}</span>}
+          eyebrow="CALENDAR"
+          title="本月用药日历"
+        />
         <Card className="overflow-hidden border-[#0388A6]/12 p-0">
           <div className="bg-[linear-gradient(180deg,rgba(3,136,166,0.18),rgba(3,136,166,0.06))] px-4 pb-4 pt-5">
+            <div className="mb-4 inline-flex rounded-full border border-white/70 bg-white/78 p-1 text-[10px] font-bold text-[#2D215F]/48 shadow-[0_10px_20px_rgba(45,33,95,0.06)]">
+              <span className="rounded-full bg-[#0388A6] px-3 py-2 text-white">用药日历</span>
+              <span className="px-3 py-2">记录视图</span>
+            </div>
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">DAILY INTAKES</p>
@@ -231,6 +244,26 @@ export default function MedicationPage({
             <ChevronRightIcon className="shrink-0 text-[#2D215F]/30" size={18} />
           </div>
         </button>
+      </section>
+
+      <section className="mt-6">
+        <SectionTitle eyebrow="TODAY" title="今晚演示重点" />
+        <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
+          <Card className="p-4">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">REMINDER</p>
+            <p className="mt-2 text-[18px] font-black text-[#2D215F]">{currentMedication.reminderTime}</p>
+            <p className="mt-1 text-[11px] leading-[1.7] text-[#2D215F]/55">
+              睡前立即服用，并确保离计划醒来至少还有 7 小时。
+            </p>
+          </Card>
+          <Card className="p-4">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">FOLLOW-UP</p>
+            <p className="mt-2 text-[18px] font-black text-[#2D215F]">{patient.nextFollowUpOn}</p>
+            <p className="mt-1 text-[11px] leading-[1.7] text-[#2D215F]/55">
+              建议复诊时带上睡眠日记、漏服情况和近期不适记录。
+            </p>
+          </Card>
+        </div>
       </section>
 
       <section className="mt-6">
