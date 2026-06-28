@@ -18,6 +18,10 @@ export default function App() {
   const [pagePayload, setPagePayload] = useState(null);
   const [toast, setToast] = useState("");
   const [demoState, setDemoState] = useState(buildInitialDemoState);
+  const [qaMode, setQaMode] = useState(() => {
+    if (typeof window === "undefined") return import.meta.env.VITE_QA_MODE ?? "local";
+    return window.localStorage.getItem("weimian.qaMode") ?? import.meta.env.VITE_QA_MODE ?? "local";
+  });
   const contentRef = useRef(null);
   const demoRuntime = buildDemoRuntime(demoState);
 
@@ -77,6 +81,10 @@ export default function App() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
+  useEffect(() => {
+    window.localStorage.setItem("weimian.qaMode", qaMode);
+  }, [qaMode]);
+
   const activeTab = tabPages.has(page)
     ? page
     : page === "sleep"
@@ -119,11 +127,26 @@ export default function App() {
       />
     );
   } else if (page === "report") {
-    content = <ReportPage demoRuntime={demoRuntime} onToast={showToast} />;
+    content = <ReportPage demoRuntime={demoRuntime} onNavigate={navigate} onToast={showToast} />;
   } else if (page === "faq") {
-    content = <FAQPage demoRuntime={demoRuntime} initialPrompt={pagePayload} />;
+    content = (
+      <FAQPage
+        demoRuntime={demoRuntime}
+        initialPrompt={pagePayload}
+        onQaModeChange={setQaMode}
+        qaMode={qaMode}
+      />
+    );
   } else {
-    content = <HomePage demoRuntime={demoRuntime} onNavigate={navigate} onToast={showToast} />;
+    content = (
+      <HomePage
+        demoRuntime={demoRuntime}
+        onNavigate={navigate}
+        onQaModeChange={setQaMode}
+        onToast={showToast}
+        qaMode={qaMode}
+      />
+    );
   }
 
   return (

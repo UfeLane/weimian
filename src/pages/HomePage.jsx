@@ -1,7 +1,6 @@
 import { weeklySleep } from "../data";
 import { getQaModePreset } from "../lib/qa";
 import {
-  AlertIcon,
   ChevronRightIcon,
   ClockIcon,
   MoonLogIcon,
@@ -11,6 +10,7 @@ import {
 import {
   Button,
   Card,
+  Chip,
   ComplianceNote,
   PageHeader,
   PatientSnapshotCard,
@@ -76,13 +76,12 @@ function TrendChart() {
   );
 }
 
-export default function HomePage({ demoRuntime, onNavigate, onToast }) {
+export default function HomePage({ demoRuntime, onNavigate, onQaModeChange, onToast, qaMode }) {
   const { currentMedication, patient, reportSummary, sleepStats, adverseRecords } = demoRuntime;
-  const qaPreset = getQaModePreset();
+  const qaPreset = getQaModePreset(qaMode);
   const quickActions = [
     { label: "记录睡眠", sub: "补充昨夜情况", Icon: MoonLogIcon, page: "sleep" },
     { label: "用药打卡", sub: `今晚 ${currentMedication.reminderTime}`, Icon: PillIcon, page: "medication" },
-    { label: "不适记录", sub: "记录身体感受", Icon: AlertIcon, page: "adverse" },
     { label: "查看报告", sub: "近 7 天档案", Icon: ReportIcon, page: "report" },
   ];
 
@@ -165,39 +164,19 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
                 结合你的睡眠与用药档案
               </span>
             </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {["local", "remote"].map((mode) => (
+                <Chip active={qaMode === mode} key={mode} onClick={() => onQaModeChange(mode)}>
+                  {mode === "local" ? "本地知识库" : "远程小模型"}
+                </Chip>
+              ))}
+            </div>
           </div>
           <Button className="!min-h-[40px] !px-4" onClick={() => onNavigate("faq")} variant="outline">
             去提问
           </Button>
         </div>
-        <div className="mt-4 grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
-          <button
-            className="pressable rounded-[18px] bg-[#F2F2F2] px-4 py-3 text-left"
-            onClick={() =>
-              onNavigate("faq", {
-                query: "达卫可应该在什么时间吃？",
-                autoAsk: true,
-              })
-            }
-            type="button"
-          >
-            <p className="text-[11px] font-bold text-[#2D215F]">先演示标签知识</p>
-            <p className="mt-1 text-[10px] text-[#2D215F]/48">“达卫可应该在什么时间吃？”</p>
-          </button>
-          <button
-            className="pressable rounded-[18px] bg-[#F2F2F2] px-4 py-3 text-left"
-            onClick={() =>
-              onNavigate("faq", {
-                query: "我现在用了多少药、什么时候复诊？",
-                autoAsk: true,
-              })
-            }
-            type="button"
-          >
-            <p className="text-[11px] font-bold text-[#2D215F]">再演示个人档案</p>
-            <p className="mt-1 text-[10px] text-[#2D215F]/48">“我现在用了多少药、什么时候复诊？”</p>
-          </button>
-        </div>
+        <p className="mt-3 text-[10px] leading-[1.7] text-[#2D215F]/48">{qaPreset.helper}</p>
       </Card>
 
       <section className="mt-6">

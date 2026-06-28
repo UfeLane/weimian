@@ -1,10 +1,9 @@
-import { medicationLibrary } from "../data";
+import { useState } from "react";
 import {
   CheckIcon,
   ChevronRightIcon,
   ClockIcon,
   PillIcon,
-  PlusIcon,
 } from "../components/Icons";
 import {
   Button,
@@ -49,11 +48,11 @@ function formatMonthLabel(startedOn) {
 
 export default function MedicationPage({
   demoRuntime,
-  onImportMedication,
   onNavigate,
   onToggleCheck,
   onToast,
 }) {
+  const [view, setView] = useState("calendar");
   const { adverseRecords, currentMedication, importedMedication, medicationWeek, patient } =
     demoRuntime;
   const monthLabel = formatMonthLabel(importedMedication.startedOn);
@@ -68,27 +67,9 @@ export default function MedicationPage({
     onToast(demoRuntime.currentMedication.checkedInDays > importedMedication.checkedInDays ? "已撤销今日打卡" : "已完成今日用药打卡");
   };
 
-  const handleImport = (medication) => {
-    onImportMedication(medication.id);
-    onToast(`已导入 ${medication.brandName} 演示药品与说明书`);
-  };
-
   return (
     <main className="page">
-      <PageHeader
-        action={
-          <button
-            aria-label="添加药品"
-            className="pressable grid h-10 w-10 place-items-center rounded-full bg-[#F2AEDB]/30 text-[#BF047E]"
-            onClick={() => onToast("Demo 中已使用示例药品")}
-            type="button"
-          >
-            <PlusIcon size={20} />
-          </button>
-        }
-        subtitle="面向已在医生指导下用药的用户"
-        title="我的用药"
-      />
+      <PageHeader subtitle="面向已在医生指导下用药的用户" title="我的用药" />
 
       <div className="mb-4">
         <PatientSnapshotCard
@@ -107,13 +88,25 @@ export default function MedicationPage({
         <SectionTitle
           action={<span className="text-[11px] font-bold text-[#0388A6]">{monthLabel}</span>}
           eyebrow="CALENDAR"
-          title="本月用药日历"
+          title={view === "calendar" ? "本月用药日历" : "用药记录视图"}
         />
         <Card className="overflow-hidden border-[#0388A6]/12 p-0">
           <div className="bg-[linear-gradient(180deg,rgba(3,136,166,0.18),rgba(3,136,166,0.06))] px-4 pb-4 pt-5">
             <div className="mb-4 inline-flex rounded-full border border-white/70 bg-white/78 p-1 text-[10px] font-bold text-[#2D215F]/48 shadow-[0_10px_20px_rgba(45,33,95,0.06)]">
-              <span className="rounded-full bg-[#0388A6] px-3 py-2 text-white">用药日历</span>
-              <span className="px-3 py-2">记录视图</span>
+              <button
+                className={`rounded-full px-3 py-2 ${view === "calendar" ? "bg-[#0388A6] text-white" : ""}`}
+                onClick={() => setView("calendar")}
+                type="button"
+              >
+                用药日历
+              </button>
+              <button
+                className={`rounded-full px-3 py-2 ${view === "records" ? "bg-[#0388A6] text-white" : ""}`}
+                onClick={() => setView("records")}
+                type="button"
+              >
+                记录视图
+              </button>
             </div>
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -153,61 +146,109 @@ export default function MedicationPage({
               </span>
             </div>
           </div>
-          <div className="px-4 pb-4 pt-3">
-            <div className="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-[#2D215F]/42">
-              {weekLabels.map((label) => (
-                <span key={label}>{label}</span>
-              ))}
+          {view === "calendar" ? (
+            <div className="px-4 pb-4 pt-3">
+              <div className="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-[#2D215F]/42">
+                {weekLabels.map((label) => (
+                  <span key={label}>{label}</span>
+                ))}
+              </div>
+              <div className="mt-3 grid grid-cols-7 gap-2">
+                {calendarDays.map((item, index) => (
+                  <div
+                    className={`flex aspect-square items-center justify-center rounded-[18px] text-[12px] font-bold ${
+                      item.state === "taken"
+                        ? "border border-[#0388A6]/15 bg-[#0388A6] text-white"
+                        : item.state === "missed"
+                          ? "border border-[#F2AEDB] bg-[#F2AEDB]/28 text-[#BF047E]"
+                          : item.state === "today"
+                            ? "border border-[#0388A6]/30 bg-[#FFFFFF] text-[#0388A6]"
+                            : item.state === "empty"
+                              ? "bg-transparent text-transparent"
+                              : "border border-[#2D215F]/7 bg-white text-[#2D215F]/72"
+                    }`}
+                    key={`${item.label}-${index}`}
+                  >
+                    {item.label ? (
+                      item.state === "taken" ? (
+                        <span className="flex flex-col items-center gap-0.5">
+                          <span>{item.label}</span>
+                          <span className="h-1.5 w-4 rounded-full bg-white/52" />
+                        </span>
+                      ) : item.state === "missed" ? (
+                        <span className="flex flex-col items-center gap-0.5">
+                          <span>{item.label}</span>
+                          <span className="text-[10px] leading-none">!</span>
+                        </span>
+                      ) : (
+                        item.label
+                      )
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3 text-[10px] font-semibold text-[#2D215F]/55">
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#0388A6]" />
+                  已服用
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#F2AEDB]" />
+                  漏服
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full border border-[#0388A6]/35 bg-white" />
+                  今日待打卡
+                </span>
+              </div>
             </div>
-            <div className="mt-3 grid grid-cols-7 gap-2">
-              {calendarDays.map((item, index) => (
-                <div
-                  className={`flex aspect-square items-center justify-center rounded-[18px] text-[12px] font-bold ${
-                    item.state === "taken"
-                      ? "border border-[#0388A6]/15 bg-[#0388A6] text-white"
-                      : item.state === "missed"
-                        ? "border border-[#F2AEDB] bg-[#F2AEDB]/28 text-[#BF047E]"
-                        : item.state === "today"
-                          ? "border border-[#0388A6]/30 bg-[#FFFFFF] text-[#0388A6]"
-                          : item.state === "empty"
-                            ? "bg-transparent text-transparent"
-                            : "border border-[#2D215F]/7 bg-white text-[#2D215F]/72"
-                  }`}
-                  key={`${item.label}-${index}`}
-                >
-                  {item.label ? (
-                    item.state === "taken" ? (
-                      <span className="flex flex-col items-center gap-0.5">
-                        <span>{item.label}</span>
-                        <span className="h-1.5 w-4 rounded-full bg-white/52" />
+          ) : (
+            <div className="space-y-3 px-4 pb-4 pt-3">
+              <Card className="border-0 bg-white p-4 shadow-none">
+                <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">MEDICATION LOG</p>
+                <div className="mt-3 space-y-3">
+                  {medicationWeek.map((item, index) => (
+                    <div className="flex items-center justify-between gap-3 rounded-[18px] bg-[#F2F2F2] px-4 py-3" key={`${item.day}-${index}`}>
+                      <div>
+                        <p className="text-[12px] font-black text-[#2D215F]">第 {index + 1} 天</p>
+                        <p className="mt-1 text-[10px] text-[#2D215F]/48">提醒时间 {currentMedication.reminderTime}</p>
+                      </div>
+                      <span className={`rounded-full px-3 py-2 text-[10px] font-bold ${item.done ? "bg-[#0388A6]/10 text-[#0388A6]" : "bg-[#F2AEDB]/28 text-[#BF047E]"}`}>
+                        {item.done ? "已完成" : "漏服"}
                       </span>
-                    ) : item.state === "missed" ? (
-                      <span className="flex flex-col items-center gap-0.5">
-                        <span>{item.label}</span>
-                        <span className="text-[10px] leading-none">!</span>
-                      </span>
-                    ) : (
-                      item.label
-                    )
-                  ) : null}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </Card>
+              <Card className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">FEEDBACK</p>
+                    <p className="mt-2 text-[15px] font-black text-[#2D215F]">用药反馈</p>
+                    <p className="mt-1 text-[11px] leading-[1.7] text-[#2D215F]/55">
+                      把嗜睡、头晕、漏服后的感受记录在这里，复诊时更容易回看。
+                    </p>
+                  </div>
+                  <Button className="!min-h-[40px] !px-4" onClick={() => onNavigate("adverse")} variant="soft">
+                    去记录
+                  </Button>
+                </div>
+                <div className="mt-4 space-y-2">
+                  {adverseRecords.map((item) => (
+                    <div className="rounded-[18px] bg-[#F2F2F2] px-4 py-3" key={`${item.date}-${item.symptom}`}>
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="text-[12px] font-black text-[#2D215F]">{item.symptom}</p>
+                        <span className="text-[10px] font-bold text-[#2D215F]/40">{item.date}</span>
+                      </div>
+                      <p className="mt-1 text-[10px] leading-[1.7] text-[#2D215F]/55">
+                        {item.note} 影响：{item.impact}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
             </div>
-            <div className="mt-4 flex flex-wrap gap-3 text-[10px] font-semibold text-[#2D215F]/55">
-              <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#0388A6]" />
-                已服用
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#F2AEDB]" />
-                漏服
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full border border-[#0388A6]/35 bg-white" />
-                今日待打卡
-              </span>
-            </div>
-          </div>
+          )}
         </Card>
       </section>
 
@@ -245,76 +286,6 @@ export default function MedicationPage({
           </div>
         </button>
       </section>
-
-      <section className="mt-6">
-        <SectionTitle eyebrow="TODAY" title="今晚演示重点" />
-        <div className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
-          <Card className="p-4">
-            <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">REMINDER</p>
-            <p className="mt-2 text-[18px] font-black text-[#2D215F]">{currentMedication.reminderTime}</p>
-            <p className="mt-1 text-[11px] leading-[1.7] text-[#2D215F]/55">
-              睡前立即服用，并确保离计划醒来至少还有 7 小时。
-            </p>
-          </Card>
-          <Card className="p-4">
-            <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">FOLLOW-UP</p>
-            <p className="mt-2 text-[18px] font-black text-[#2D215F]">{patient.nextFollowUpOn}</p>
-            <p className="mt-1 text-[11px] leading-[1.7] text-[#2D215F]/55">
-              建议复诊时带上睡眠日记、漏服情况和近期不适记录。
-            </p>
-          </Card>
-        </div>
-      </section>
-
-      <section className="mt-6">
-        <SectionTitle eyebrow="IMPORT" title="演示药品导入" />
-        <div className="space-y-3">
-          {medicationLibrary.map((medication) => {
-            const imported = medication.id === importedMedication.id;
-            return (
-              <Card className="p-4" key={medication.id}>
-                <div className="flex items-start gap-3">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#F2AEDB]/30 text-[#BF047E]">
-                    <PillIcon size={22} />
-                  </span>
-                  <div>
-                    <p className="text-sm font-black text-[#2D215F]">
-                      {medication.brandName} / {medication.englishBrand}
-                    </p>
-                    <p className="mt-1 text-[11px] leading-relaxed text-[#2D215F]/55">
-                      {medication.purpose}
-                    </p>
-                    <p className="mt-1 text-[10px] text-[#2D215F]/42">
-                      {medication.manufacturer} · 规格 {medication.strengths.join(" / ")}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center justify-between gap-3">
-                  <span className="text-[10px] font-semibold text-[#0388A6]">
-                    来源：{medication.sources[0].shortLabel}
-                  </span>
-                  <Button
-                    className="!min-h-[40px] !px-4"
-                    onClick={() => handleImport(medication)}
-                    variant={imported ? "soft" : "primary"}
-                  >
-                    {imported ? "已导入" : "导入药品"}
-                  </Button>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
-      <div className="mt-4 grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
-        <Button onClick={() => onNavigate("adverse")} variant="soft">
-          记录不适
-        </Button>
-        <Button onClick={() => onNavigate("medication-detail")} variant="outline">
-          查看药品详情
-        </Button>
-      </div>
 
       <ComplianceNote>
         达卫可示例药品信息基于 FDA / DailyMed 公开资料整理，仅用于 Demo 演示。实际使用请遵循当地正式说明书、医生处方和药师指导。

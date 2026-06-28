@@ -33,7 +33,7 @@ function WakeTrend() {
   );
 }
 
-export default function ReportPage({ demoRuntime, onToast }) {
+export default function ReportPage({ demoRuntime, onNavigate, onToast }) {
   const { adverseRecords, patient, reportSummary } = demoRuntime;
   return (
     <main className="page">
@@ -134,6 +134,9 @@ export default function ReportPage({ demoRuntime, onToast }) {
             </span>
           </div>
         </Card>
+        <Button className="mt-3 w-full" onClick={() => onNavigate("adverse")} variant="soft">
+          记录不适
+        </Button>
       </section>
 
       <section className="mt-7">

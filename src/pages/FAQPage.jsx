@@ -48,7 +48,7 @@ const resultFollowups = [
   "复诊前应该准备什么？",
 ];
 
-export default function FAQPage({ demoRuntime, initialPrompt }) {
+export default function FAQPage({ demoRuntime, initialPrompt, onQaModeChange, qaMode }) {
   const [tab, setTab] = useState("sleep");
   const [openIndex, setOpenIndex] = useState(0);
   const [query, setQuery] = useState("");
@@ -56,7 +56,7 @@ export default function FAQPage({ demoRuntime, initialPrompt }) {
   const [loading, setLoading] = useState(false);
   const handledPromptRef = useRef("");
   const { currentMedication, patient } = demoRuntime;
-  const qaPreset = getQaModePreset();
+  const qaPreset = getQaModePreset(qaMode);
   const activeCategory = categoryMap[tab];
   const faqs = activeCategory.items;
   const browseTabs = [
@@ -70,7 +70,7 @@ export default function FAQPage({ demoRuntime, initialPrompt }) {
     if (!nextQuery.trim()) return;
     setQuery(nextQuery);
     setLoading(true);
-    const result = await askDemoQa(nextQuery, demoRuntime);
+    const result = await askDemoQa(nextQuery, demoRuntime, { modeOverride: qaMode });
     setQaResult(result);
     setLoading(false);
   };
@@ -124,6 +124,13 @@ export default function FAQPage({ demoRuntime, initialPrompt }) {
                 外部知识 + 内部档案
               </span>
             </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {["local", "remote"].map((mode) => (
+                <Chip active={qaMode === mode} key={mode} onClick={() => onQaModeChange(mode)}>
+                  {mode === "local" ? "本地知识库" : "远程小模型"}
+                </Chip>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -152,6 +159,7 @@ export default function FAQPage({ demoRuntime, initialPrompt }) {
         <p className="mt-2 text-[11px] leading-[1.8] text-[#2D215F]/58">
           适合演示“外部知识 + 内部数据”的回答模式。{qaPreset.detail}
         </p>
+        <p className="mt-2 text-[10px] leading-[1.7] text-[#2D215F]/45">{qaPreset.helper}</p>
         <div className="mt-4 flex gap-2">
           <Input
             className="flex-1"
@@ -174,20 +182,6 @@ export default function FAQPage({ demoRuntime, initialPrompt }) {
               {prompt}
             </button>
           ))}
-        </div>
-        <div className="mt-4 grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
-          <div className="rounded-[18px] bg-[#F2F2F2] px-4 py-3">
-            <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">推荐演示 01</p>
-            <p className="mt-1 text-[11px] font-semibold leading-[1.7] text-[#2D215F]/62">
-              先问标签知识，再追问“我现在用了多少药、什么时候复诊”。
-            </p>
-          </div>
-          <div className="rounded-[18px] bg-[#F2F2F2] px-4 py-3">
-            <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">推荐演示 02</p>
-            <p className="mt-1 text-[11px] font-semibold leading-[1.7] text-[#2D215F]/62">
-              追问会带上程序内档案，更容易展示“外部知识 + 内部数据”差异。
-            </p>
-          </div>
         </div>
         <div className="mt-3 rounded-[18px] border border-[#2D215F]/8 bg-white px-4 py-3">
           <p className="text-[10px] font-bold tracking-[0.12em] text-[#2D215F]/45">当前配置说明</p>
@@ -283,9 +277,9 @@ export default function FAQPage({ demoRuntime, initialPrompt }) {
         </Card>
       ) : (
         <Card className="mt-4 border-dashed border-[#2D215F]/12 bg-white/72 p-4">
-          <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">演示建议</p>
+          <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">常见问题</p>
           <p className="mt-2 text-[12px] leading-[1.8] text-[#2D215F]/60">
-            先问一个公开知识问题，再追问一个内部档案问题，会最容易展示这个产品的差异化。
+            可以先从达卫可标签、当前周期、余量和复诊时间这几类问题开始。
           </p>
           <div className="mt-4 grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
             <button
