@@ -134,7 +134,11 @@ export default function ReportPage({ demoRuntime, onNavigate, onToast }) {
             </span>
           </div>
         </Card>
-        <Button className="mt-3 w-full" onClick={() => onNavigate("adverse")} variant="soft">
+        <Button
+          className="mt-3 w-full"
+          onClick={() => onNavigate("adverse", { mode: "report" })}
+          variant="soft"
+        >
           记录不适
         </Button>
       </section>

@@ -123,6 +123,7 @@ export default function App() {
       <AdverseRecordPage
         demoRuntime={demoRuntime}
         onBack={() => navigate(previousPage)}
+        pageContext={pagePayload}
         onSaved={saveAdverseRecord}
       />
     );

@@ -229,7 +229,11 @@ export default function MedicationPage({
                       把嗜睡、头晕、漏服后的感受记录在这里，复诊时更容易回看。
                     </p>
                   </div>
-                  <Button className="!min-h-[40px] !px-4" onClick={() => onNavigate("adverse")} variant="soft">
+                  <Button
+                    className="!min-h-[40px] !px-4"
+                    onClick={() => onNavigate("adverse", { mode: "medication" })}
+                    variant="soft"
+                  >
                     去记录
                   </Button>
                 </div>
