@@ -95,7 +95,7 @@ export default function HomePage({ demoRuntime, onNavigate, onQaModeChange, onTo
             <span className="h-1.5 w-1.5 rounded-full bg-[#2D215F]/30" />
           </div>
         }
-        subtitle="患者支持 · 用药管理 · 就医沟通"
+        subtitle="今日记录、用药提醒与档案问答"
         title="卫眠伴行"
       />
 
@@ -104,7 +104,7 @@ export default function HomePage({ demoRuntime, onNavigate, onQaModeChange, onTo
         <div className="absolute -bottom-6 right-8 h-16 w-32 rotate-[-18deg] rounded-full border border-white/15 bg-white/8" />
         <div className="relative">
           <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-[0.12em]">
-            好眠档案
+            今日首页
           </span>
           <h2 className="mt-4 max-w-[292px] text-[27px] font-black leading-[1.22] tracking-[-0.05em]">
             把“我睡不好”，
@@ -149,7 +149,7 @@ export default function HomePage({ demoRuntime, onNavigate, onQaModeChange, onTo
       </Card>
 
       <Card className="mt-4 p-4">
-        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">AI ENTRY</p>
+        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">AI 问答</p>
         <div className="mt-2 flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-[16px] font-black text-[#2D215F]">问问小眠医生</p>
@@ -201,7 +201,7 @@ export default function HomePage({ demoRuntime, onNavigate, onQaModeChange, onTo
       </section>
 
       <section className="mt-6">
-        <SectionTitle eyebrow="QUICK ACCESS" title="快速记录" />
+        <SectionTitle eyebrow="QUICK ACCESS" title="今日操作" />
         <div className="grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
           {quickActions.map(({ label, sub, Icon, page }, index) => (
             <button

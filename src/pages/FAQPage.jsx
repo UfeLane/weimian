@@ -90,7 +90,7 @@ export default function FAQPage({ demoRuntime, initialPrompt, onQaModeChange, qa
 
   return (
     <main className="page">
-      <PageHeader subtitle="本地知识库 + 当前档案联动演示" title="问问小眠医生" />
+      <PageHeader subtitle="知识问答与当前档案联动" title="问问小眠医生" />
 
       <section className="relative overflow-hidden rounded-[28px] border border-[#0388A6]/12 bg-[linear-gradient(145deg,rgba(3,136,166,0.12),rgba(45,33,95,0.08))] p-5">
         <div className="absolute -right-7 -top-7 h-24 w-24 rounded-full border-[16px] border-[#0388A6]/8" />
@@ -154,7 +154,7 @@ export default function FAQPage({ demoRuntime, initialPrompt, onQaModeChange, qa
       </div>
 
       <Card className="mt-4 p-4">
-        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">ASK NOW</p>
+        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">开始提问</p>
         <h3 className="mt-2 text-[16px] font-black text-[#2D215F]">现在就可以开始提问</h3>
         <p className="mt-2 text-[11px] leading-[1.8] text-[#2D215F]/58">
           适合演示“外部知识 + 内部数据”的回答模式。{qaPreset.detail}
@@ -184,7 +184,7 @@ export default function FAQPage({ demoRuntime, initialPrompt, onQaModeChange, qa
           ))}
         </div>
         <div className="mt-3 rounded-[18px] border border-[#2D215F]/8 bg-white px-4 py-3">
-          <p className="text-[10px] font-bold tracking-[0.12em] text-[#2D215F]/45">当前配置说明</p>
+          <p className="text-[10px] font-bold tracking-[0.12em] text-[#2D215F]/45">问答模式说明</p>
           <p className="mt-1 text-[11px] leading-[1.8] text-[#2D215F]/62">
             {qaPreset.mode === "local"
               ? "当前演示会稳定使用本地知识包回答，适合提报和离线演示。后续只要配置 OPENAI_API_KEY，并把 VITE_QA_MODE 切到 remote，就可以接入远程小模型。"
@@ -277,7 +277,7 @@ export default function FAQPage({ demoRuntime, initialPrompt, onQaModeChange, qa
         </Card>
       ) : (
         <Card className="mt-4 border-dashed border-[#2D215F]/12 bg-white/72 p-4">
-          <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">常见问题</p>
+          <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">快速开始</p>
           <p className="mt-2 text-[12px] leading-[1.8] text-[#2D215F]/60">
             可以先从达卫可标签、当前周期、余量和复诊时间这几类问题开始。
           </p>

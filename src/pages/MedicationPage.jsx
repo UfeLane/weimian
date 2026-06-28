@@ -69,7 +69,7 @@ export default function MedicationPage({
 
   return (
     <main className="page">
-      <PageHeader subtitle="面向已在医生指导下用药的用户" title="我的用药" />
+      <PageHeader subtitle="用药日历、反馈记录与药品详情" title="我的用药" />
 
       <div className="mb-4">
         <PatientSnapshotCard
@@ -257,7 +257,7 @@ export default function MedicationPage({
       </section>
 
       <section className="mt-6">
-        <SectionTitle eyebrow="MY MEDICINE" title="已录入药品" />
+        <SectionTitle eyebrow="MY MEDICINE" title="我的药品" />
         <button
           className="card pressable block w-full rounded-[24px] bg-white p-5 text-left"
           onClick={() => onNavigate("medication-detail")}

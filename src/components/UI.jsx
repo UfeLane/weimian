@@ -38,11 +38,11 @@ export function PageHeader({ title, subtitle, onBack, action }) {
             </button>
           ) : null}
           <div className="min-w-0">
-            <h1 className="truncate text-[20px] font-black tracking-[-0.04em] text-[#2D215F]">
+            <h1 className="text-[20px] font-black tracking-[-0.04em] text-[#2D215F]">
               {title}
             </h1>
             {subtitle ? (
-              <p className="mt-0.5 truncate text-[11px] leading-relaxed text-[#2D215F]/55">
+              <p className="mt-0.5 text-[11px] leading-relaxed text-[#2D215F]/55">
                 {subtitle}
               </p>
             ) : null}

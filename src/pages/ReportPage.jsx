@@ -37,7 +37,7 @@ export default function ReportPage({ demoRuntime, onNavigate, onToast }) {
   const { adverseRecords, patient, reportSummary } = demoRuntime;
   return (
     <main className="page">
-      <PageHeader subtitle={reportSummary.periodLabel} title="好眠档案报告" />
+      <PageHeader subtitle={`近 7 日睡眠、用药与复诊摘要 · ${reportSummary.periodLabel}`} title="好眠档案" />
 
       <section className="relative overflow-hidden rounded-[30px] bg-[linear-gradient(145deg,#2D215F_0%,#0388A6_100%)] px-5 pb-6 pt-5 text-white shadow-[0_20px_44px_rgba(45,33,95,0.22)]">
         <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full border-[28px] border-[#F2AEDB]/10" />
@@ -144,7 +144,7 @@ export default function ReportPage({ demoRuntime, onNavigate, onToast }) {
       </section>
 
       <section className="mt-7">
-        <SectionTitle eyebrow="VISIT CHECKLIST" title="复诊沟通问题清单" />
+        <SectionTitle eyebrow="VISIT CHECKLIST" title="复诊准备" />
         <Card className="space-y-4 p-5">
           {patient.visitQuestions.map((item, index) => (
             <div className="flex gap-3" key={item}>
