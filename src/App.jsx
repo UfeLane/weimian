@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { BottomNav, Toast } from "./components/UI";
+import { BottomNav, DoctorFloatButton, Toast } from "./components/UI";
 import { buildDemoRuntime, buildInitialDemoState } from "./demo-state";
 import { medicationLibrary } from "./data";
 import AdverseRecordPage from "./pages/AdverseRecordPage";
 import FAQPage from "./pages/FAQPage";
 import HomePage from "./pages/HomePage";
+import MedicationDetailPage from "./pages/MedicationDetailPage";
 import MedicationPage from "./pages/MedicationPage";
 import ReportPage from "./pages/ReportPage";
 import SleepRecordPage from "./pages/SleepRecordPage";
@@ -97,6 +98,13 @@ export default function App() {
         onNavigate={navigate}
         onToggleCheck={toggleMedicationCheck}
         onToast={showToast}
+      />
+    );
+  } else if (page === "medication-detail") {
+    content = (
+      <MedicationDetailPage
+        demoRuntime={demoRuntime}
+        onBack={() => navigate("medication")}
         onUpdateReminderTime={updateReminderTime}
       />
     );
@@ -122,6 +130,7 @@ export default function App() {
         <div className="phone-content" ref={contentRef}>
           {content}
         </div>
+        {page !== "faq" ? <DoctorFloatButton onClick={() => navigate("faq")} /> : null}
         <BottomNav active={activeTab} onNavigate={navigate} />
         <Toast message={toast} />
       </div>

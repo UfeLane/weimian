@@ -202,6 +202,33 @@ export function Toast({ message }) {
   );
 }
 
+export function DoctorFloatButton({ onClick }) {
+  return (
+    <button
+      className="pressable absolute bottom-[calc(92px+env(safe-area-inset-bottom))] right-4 z-40 flex items-center gap-3 rounded-full border border-[#F2AEDB]/70 bg-white/96 px-3 py-3 shadow-[0_20px_40px_rgba(45,33,95,0.16)] backdrop-blur-xl"
+      onClick={onClick}
+      type="button"
+    >
+      <span className="relative grid h-[60px] w-[42px] shrink-0 place-items-center rounded-full bg-[linear-gradient(180deg,#F2AEDB_0%,#FFFFFF_45%,#0388A6_100%)] shadow-[inset_0_3px_10px_rgba(255,255,255,0.55)]">
+        <span className="absolute right-0 top-1 grid h-4 w-4 place-items-center rounded-full bg-white text-[10px] font-black text-[#0388A6] shadow-[0_6px_12px_rgba(45,33,95,0.12)]">
+          +
+        </span>
+        <span className="absolute top-[18px] flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#2D215F]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#2D215F]" />
+        </span>
+        <span className="absolute top-[31px] h-2 w-4 rounded-b-full border-b-[2px] border-[#2D215F]" />
+        <span className="absolute bottom-[13px] left-[7px] h-2.5 w-2.5 rounded-full bg-[#F2AEDB]" />
+        <span className="absolute bottom-[13px] right-[7px] h-2.5 w-2.5 rounded-full bg-[#F2AEDB]" />
+      </span>
+      <span className="min-w-0 text-left">
+        <span className="block text-[9px] font-bold tracking-[0.12em] text-[#0388A6]">AI DOCTOR</span>
+        <span className="mt-0.5 block text-[12px] font-black text-[#2D215F]">问问小眠医生</span>
+      </span>
+    </button>
+  );
+}
+
 export function PatientSnapshotCard({
   title = "当前档案快照",
   summary,

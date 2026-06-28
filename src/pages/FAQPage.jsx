@@ -1,17 +1,13 @@
 import { useState } from "react";
 import {
-  adverseRecords,
   followupFaqs,
   medicationFaqs,
-  medicationProfile,
   personalFaqs,
-  qaKnowledgeOverview,
   qaSuggestedPrompts,
-  sleepDiaryHighlights,
   sleepFaqs,
 } from "../data";
 import { askDemoQa } from "../lib/qa";
-import { ChatIcon, ChevronRightIcon, ClockIcon, PillIcon, UserDoctorIcon } from "../components/Icons";
+import { ChevronRightIcon, PillIcon } from "../components/Icons";
 import {
   Button,
   Card,
@@ -21,7 +17,6 @@ import {
   PageHeader,
   PatientSnapshotCard,
   SectionTitle,
-  TimelineList,
 } from "../components/UI";
 
 const categoryMap = {
@@ -59,8 +54,15 @@ export default function FAQPage({ demoRuntime }) {
   const [query, setQuery] = useState("");
   const [qaResult, setQaResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { currentMedication, patient } = demoRuntime;
   const activeCategory = categoryMap[tab];
   const faqs = activeCategory.items;
+  const browseTabs = [
+    { id: "sleep", title: "睡眠知识" },
+    { id: "medication", title: "达卫可标签" },
+    { id: "profile", title: "用户档案" },
+    { id: "followup", title: "复诊准备" },
+  ];
 
   const submitQuestion = async (nextQuery) => {
     if (!nextQuery.trim()) return;
@@ -73,68 +75,37 @@ export default function FAQPage({ demoRuntime }) {
 
   return (
     <main className="page">
-      <PageHeader subtitle="本地知识库 + 当前档案联动演示" title="知识问答" />
+      <PageHeader subtitle="本地知识库 + 当前档案联动演示" title="问问小眠医生" />
 
       <section className="relative overflow-hidden rounded-[28px] border border-[#0388A6]/12 bg-[linear-gradient(145deg,rgba(3,136,166,0.12),rgba(45,33,95,0.08))] p-5">
         <div className="absolute -right-7 -top-7 h-24 w-24 rounded-full border-[16px] border-[#0388A6]/8" />
         <div className="absolute bottom-0 right-4 h-14 w-14 rounded-full bg-[#BF047E]/8 blur-2xl" />
-        <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#0388A6] text-white">
-          <ChatIcon />
-        </span>
-        <h2 className="mt-4 text-[20px] font-black tracking-[-0.04em] text-[#2D215F]">
-          把外部知识和个人档案放到同一个回答里
-        </h2>
-        <p className="mt-2 max-w-[310px] text-[11px] leading-[1.8] text-[#2D215F]/60">
-          这个 Demo 会优先检索睡眠知识、达卫可公开标签和程序内的当前档案，用更接近真实产品的方式回答你的问题。
-        </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <span className="rounded-full bg-white/82 px-3 py-2 text-[10px] font-bold text-[#0388A6]">
-            本地知识包
+        <div className="flex items-start gap-4">
+          <span className="relative grid h-[74px] w-[50px] shrink-0 place-items-center rounded-full bg-[linear-gradient(180deg,#F2AEDB_0%,#FFFFFF_44%,#0388A6_100%)] shadow-[0_12px_28px_rgba(45,33,95,0.12)]">
+            <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full bg-white text-[10px] font-black text-[#0388A6]">
+              +
+            </span>
+            <span className="absolute top-[22px] flex gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2D215F]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2D215F]" />
+            </span>
+            <span className="absolute top-[36px] h-2 w-4 rounded-b-full border-b-[2px] border-[#2D215F]" />
+            <span className="absolute bottom-[15px] left-[8px] h-2.5 w-2.5 rounded-full bg-[#F2AEDB]" />
+            <span className="absolute bottom-[15px] right-[8px] h-2.5 w-2.5 rounded-full bg-[#F2AEDB]" />
           </span>
-          <span className="rounded-full bg-white/82 px-3 py-2 text-[10px] font-bold text-[#BF047E]">
-            复诊问题模板
-          </span>
-          <span className="rounded-full bg-white/82 px-3 py-2 text-[10px] font-bold text-[#2D215F]">
-            当前用药档案
-          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">AI DOCTOR</p>
+            <h2 className="mt-2 text-[20px] font-black tracking-[-0.04em] text-[#2D215F]">
+              把外部知识和你的档案一起回答
+            </h2>
+            <p className="mt-2 text-[11px] leading-[1.8] text-[#2D215F]/60">
+              可以直接问睡眠知识、达卫可标签、你的当前周期、余量、复诊时间和近期记录。
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="mt-6">
-        <SectionTitle eyebrow="KNOWLEDGE PACK" title="演示知识包总览" />
-        <div className="grid grid-cols-2 gap-3">
-          {qaKnowledgeOverview.map((item) => {
-            const active = item.id === tab;
-            const toneClass =
-              item.tone === "brand"
-                ? "bg-[#F2AEDB]/24 text-[#BF047E]"
-                : "bg-[#0388A6]/10 text-[#0388A6]";
-            return (
-              <button
-                className={`pressable rounded-[22px] border p-4 text-left ${
-                  active
-                    ? "border-[#BF047E]/18 bg-white shadow-[0_12px_28px_rgba(45,33,95,0.08)]"
-                    : "border-[#2D215F]/7 bg-white/72"
-                }`}
-                key={item.id}
-                onClick={() => {
-                  setTab(item.id);
-                  setOpenIndex(0);
-                }}
-                type="button"
-              >
-                <span className={`inline-flex rounded-full px-2.5 py-1 text-[9px] font-bold ${toneClass}`}>
-                  {item.value}
-                </span>
-                <p className="mt-3 text-[14px] font-black text-[#2D215F]">{item.title}</p>
-                <p className="mt-1 text-[10px] leading-[1.7] text-[#2D215F]/52">{item.description}</p>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      <div className="mt-6">
+      <div className="mt-5">
         <PatientSnapshotCard
           action={
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#F2AEDB]/30 text-[#BF047E]">
@@ -142,19 +113,19 @@ export default function FAQPage({ demoRuntime }) {
             </span>
           }
           chips={[
-            `今晚 ${medicationProfile.currentMedication.reminderTime} 用药`,
-            `当前周期 ${medicationProfile.currentMedication.cycleDays} 天`,
-            `已用 ${medicationProfile.currentMedication.usedTablets} 片`,
-            `余量 ${medicationProfile.currentMedication.remainingTablets} 片`,
-            `复诊 ${medicationProfile.patient.nextFollowUpOn}`,
+            `今晚 ${currentMedication.reminderTime} 用药`,
+            `当前周期 ${currentMedication.cycleDays} 天`,
+            `已用 ${currentMedication.usedTablets} 片`,
+            `余量 ${currentMedication.remainingTablets} 片`,
+            `复诊 ${patient.nextFollowUpOn}`,
           ]}
-          summary={`${medicationProfile.patient.displayName} · ${medicationProfile.patient.sleepSummary}`}
+          summary={`${patient.displayName} · ${patient.sleepSummary}`}
         />
       </div>
 
       <Card className="mt-4 p-4">
-        <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">AI DEMO</p>
-        <h3 className="mt-2 text-[16px] font-black text-[#2D215F]">像成品一样提问、追问、回看来源</h3>
+        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">ASK NOW</p>
+        <h3 className="mt-2 text-[16px] font-black text-[#2D215F]">现在就可以开始提问</h3>
         <p className="mt-2 text-[11px] leading-[1.8] text-[#2D215F]/58">
           适合演示“外部知识 + 内部数据”的回答模式。当前默认使用本地知识库，后面也可以平滑换成真实模型。
         </p>
@@ -296,7 +267,7 @@ export default function FAQPage({ demoRuntime }) {
         <SectionTitle eyebrow="BROWSE" title={activeCategory.title} />
         <p className="text-[11px] leading-[1.8] text-[#2D215F]/55">{activeCategory.description}</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          {qaKnowledgeOverview.map((item) => (
+          {browseTabs.map((item) => (
             <Chip
               active={tab === item.id}
               key={item.id}
@@ -380,67 +351,6 @@ export default function FAQPage({ demoRuntime }) {
             );
           })}
         </div>
-      </section>
-
-      <section className="mt-6 grid grid-cols-1 gap-3 min-[390px]:grid-cols-2">
-        <Card className="p-4">
-          <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-2xl bg-[#0388A6]/10 text-[#0388A6]">
-              <ClockIcon size={18} />
-            </span>
-            <div>
-              <p className="text-[10px] font-bold tracking-[0.12em] text-[#0388A6]">目标</p>
-              <p className="text-[12px] font-black text-[#2D215F]">当前想改善什么</p>
-            </div>
-          </div>
-          <p className="mt-3 text-[11px] leading-[1.8] text-[#2D215F]/60">
-            {medicationProfile.patient.recoveryGoal}
-          </p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-2xl bg-[#F2AEDB]/28 text-[#BF047E]">
-              <UserDoctorIcon size={18} />
-            </span>
-            <div>
-              <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">复诊清单</p>
-              <p className="text-[12px] font-black text-[#2D215F]">建议带去门诊的内容</p>
-            </div>
-          </div>
-          <div className="mt-3 space-y-2">
-            {medicationProfile.patient.reviewFocus.slice(0, 3).map((item) => (
-              <div
-                className="flex items-center gap-2 rounded-[16px] bg-[#F2F2F2] px-3 py-2"
-                key={item}
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-[#0388A6]" />
-                <span className="text-[10px] font-semibold text-[#2D215F]/62">{item}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </section>
-
-      <section className="mt-6">
-        <SectionTitle eyebrow="RECENT LOG" title="程序内最近记录" />
-        <Card className="p-4">
-          <TimelineList
-            items={[
-              {
-                id: "latest-sleep",
-                title: `睡眠记录 · ${sleepDiaryHighlights[2].date}`,
-                meta: sleepDiaryHighlights[2].sleepLatency,
-                body: `上床 ${sleepDiaryHighlights[2].bedtime}，夜间醒来 ${sleepDiaryHighlights[2].awakenings} 次，白天状态：${sleepDiaryHighlights[2].daytimeState}。`,
-              },
-              ...adverseRecords.map((item) => ({
-                id: `${item.date}-${item.symptom}`,
-                title: `不适记录 · ${item.symptom}`,
-                meta: item.date,
-                body: `${item.note} 影响：${item.impact}。`,
-              })),
-            ]}
-          />
-        </Card>
       </section>
 
       <ComplianceNote>

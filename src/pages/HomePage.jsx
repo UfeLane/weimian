@@ -81,7 +81,7 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
     { label: "记录睡眠", sub: "补充昨夜情况", Icon: MoonLogIcon, page: "sleep" },
     { label: "用药打卡", sub: `今晚 ${currentMedication.reminderTime}`, Icon: PillIcon, page: "medication" },
     { label: "不适记录", sub: "记录身体感受", Icon: AlertIcon, page: "adverse" },
-    { label: "生成报告", sub: "近 7 天档案", Icon: ReportIcon, page: "report" },
+    { label: "查看报告", sub: "近 7 天档案", Icon: ReportIcon, page: "report" },
   ];
 
   return (
@@ -147,7 +147,22 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
         </div>
       </Card>
 
-      <section className="mt-7">
+      <Card className="mt-4 p-4">
+        <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">AI ENTRY</p>
+        <div className="mt-2 flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-[16px] font-black text-[#2D215F]">问问小眠医生</p>
+            <p className="mt-1 text-[11px] leading-[1.8] text-[#2D215F]/56">
+              可以直接问睡眠知识、达卫可用药、你的当前周期和下次复诊重点。
+            </p>
+          </div>
+          <Button className="!min-h-[40px] !px-4" onClick={() => onNavigate("faq")} variant="outline">
+            去提问
+          </Button>
+        </div>
+      </Card>
+
+      <section className="mt-6">
         <SectionTitle eyebrow="TODAY" title="今日睡眠概览" />
         <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
           {sleepStats.map((stat) => (
@@ -168,19 +183,7 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
         </div>
       </section>
 
-      <div className="mt-4">
-        <PatientSnapshotCard
-          chips={[
-            `复诊 ${patient.nextFollowUpOn}`,
-            `本周完整度 ${reportSummary.completionRate}%`,
-            `已记录不适 ${adverseRecords.length} 条`,
-          ]}
-          summary={patient.sleepSummary}
-          title="当前档案焦点"
-        />
-      </div>
-
-      <section className="mt-7">
+      <section className="mt-6">
         <SectionTitle eyebrow="QUICK ACCESS" title="快速记录" />
         <div className="grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
           {quickActions.map(({ label, sub, Icon, page }, index) => (
@@ -212,7 +215,7 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
         </div>
       </section>
 
-      <section className="mt-7">
+      <section className="mt-6">
         <SectionTitle
           action={<span className="text-[11px] font-bold text-[#0388A6]">平均 6.2 小时</span>}
           eyebrow="7-DAY TREND"
@@ -222,6 +225,18 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
           <TrendChart />
         </Card>
       </section>
+
+      <div className="mt-4">
+        <PatientSnapshotCard
+          chips={[
+            `复诊 ${patient.nextFollowUpOn}`,
+            `本周完整度 ${reportSummary.completionRate}%`,
+            `已记录不适 ${adverseRecords.length} 条`,
+          ]}
+          summary={patient.sleepSummary}
+          title="当前档案焦点"
+        />
+      </div>
 
       <ComplianceNote>
         本工具仅用于记录、提醒与就医沟通参考，不提供诊断、处方推荐或疗效判断。
