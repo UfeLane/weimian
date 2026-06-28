@@ -15,14 +15,16 @@ const tabPages = new Set(["home", "report", "medication", "faq"]);
 export default function App() {
   const [page, setPage] = useState("home");
   const [previousPage, setPreviousPage] = useState("home");
+  const [pagePayload, setPagePayload] = useState(null);
   const [toast, setToast] = useState("");
   const [demoState, setDemoState] = useState(buildInitialDemoState);
   const contentRef = useRef(null);
   const demoRuntime = buildDemoRuntime(demoState);
 
-  const navigate = (nextPage) => {
+  const navigate = (nextPage, payload = null) => {
     setPreviousPage(page);
     setPage(nextPage);
+    setPagePayload(payload);
     contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -119,7 +121,7 @@ export default function App() {
   } else if (page === "report") {
     content = <ReportPage demoRuntime={demoRuntime} onToast={showToast} />;
   } else if (page === "faq") {
-    content = <FAQPage demoRuntime={demoRuntime} />;
+    content = <FAQPage demoRuntime={demoRuntime} initialPrompt={pagePayload} />;
   } else {
     content = <HomePage demoRuntime={demoRuntime} onNavigate={navigate} onToast={showToast} />;
   }
@@ -130,7 +132,16 @@ export default function App() {
         <div className="phone-content" ref={contentRef}>
           {content}
         </div>
-        {page !== "faq" ? <DoctorFloatButton onClick={() => navigate("faq")} /> : null}
+        {page !== "faq" ? (
+          <DoctorFloatButton
+            onClick={() =>
+              navigate("faq", {
+                query: "我的下一次复诊时间和关注点是什么？",
+                autoAsk: true,
+              })
+            }
+          />
+        ) : null}
         <BottomNav active={activeTab} onNavigate={navigate} />
         <Toast message={toast} />
       </div>

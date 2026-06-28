@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   followupFaqs,
   medicationFaqs,
@@ -48,12 +48,13 @@ const resultFollowups = [
   "复诊前应该准备什么？",
 ];
 
-export default function FAQPage({ demoRuntime }) {
+export default function FAQPage({ demoRuntime, initialPrompt }) {
   const [tab, setTab] = useState("sleep");
   const [openIndex, setOpenIndex] = useState(0);
   const [query, setQuery] = useState("");
   const [qaResult, setQaResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const handledPromptRef = useRef("");
   const { currentMedication, patient } = demoRuntime;
   const qaPreset = getQaModePreset();
   const activeCategory = categoryMap[tab];
@@ -73,6 +74,19 @@ export default function FAQPage({ demoRuntime }) {
     setQaResult(result);
     setLoading(false);
   };
+
+  useEffect(() => {
+    const nextQuery = initialPrompt?.query?.trim();
+    if (!nextQuery) return;
+    if (handledPromptRef.current === `${nextQuery}:${Boolean(initialPrompt?.autoAsk)}`) return;
+
+    handledPromptRef.current = `${nextQuery}:${Boolean(initialPrompt?.autoAsk)}`;
+    setQuery(nextQuery);
+
+    if (initialPrompt?.autoAsk) {
+      void submitQuestion(nextQuery);
+    }
+  }, [initialPrompt]);
 
   return (
     <main className="page">

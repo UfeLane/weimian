@@ -173,7 +173,12 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
         <div className="mt-4 grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
           <button
             className="pressable rounded-[18px] bg-[#F2F2F2] px-4 py-3 text-left"
-            onClick={() => onNavigate("faq")}
+            onClick={() =>
+              onNavigate("faq", {
+                query: "达卫可应该在什么时间吃？",
+                autoAsk: true,
+              })
+            }
             type="button"
           >
             <p className="text-[11px] font-bold text-[#2D215F]">先演示标签知识</p>
@@ -181,7 +186,12 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
           </button>
           <button
             className="pressable rounded-[18px] bg-[#F2F2F2] px-4 py-3 text-left"
-            onClick={() => onNavigate("faq")}
+            onClick={() =>
+              onNavigate("faq", {
+                query: "我现在用了多少药、什么时候复诊？",
+                autoAsk: true,
+              })
+            }
             type="button"
           >
             <p className="text-[11px] font-bold text-[#2D215F]">再演示个人档案</p>
