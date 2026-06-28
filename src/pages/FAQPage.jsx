@@ -6,7 +6,7 @@ import {
   qaSuggestedPrompts,
   sleepFaqs,
 } from "../data";
-import { askDemoQa } from "../lib/qa";
+import { askDemoQa, getQaModePreset } from "../lib/qa";
 import { ChevronRightIcon, PillIcon } from "../components/Icons";
 import {
   Button,
@@ -55,6 +55,7 @@ export default function FAQPage({ demoRuntime }) {
   const [qaResult, setQaResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const { currentMedication, patient } = demoRuntime;
+  const qaPreset = getQaModePreset();
   const activeCategory = categoryMap[tab];
   const faqs = activeCategory.items;
   const browseTabs = [
@@ -101,6 +102,14 @@ export default function FAQPage({ demoRuntime }) {
             <p className="mt-2 text-[11px] leading-[1.8] text-[#2D215F]/60">
               可以直接问睡眠知识、达卫可标签、你的当前周期、余量、复诊时间和近期记录。
             </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="rounded-full bg-white/88 px-3 py-2 text-[10px] font-bold text-[#0388A6]">
+                当前模式：{qaPreset.label}
+              </span>
+              <span className="rounded-full bg-white/88 px-3 py-2 text-[10px] font-bold text-[#BF047E]">
+                外部知识 + 内部档案
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -127,7 +136,7 @@ export default function FAQPage({ demoRuntime }) {
         <p className="text-[10px] font-bold tracking-[0.12em] text-[#BF047E]">ASK NOW</p>
         <h3 className="mt-2 text-[16px] font-black text-[#2D215F]">现在就可以开始提问</h3>
         <p className="mt-2 text-[11px] leading-[1.8] text-[#2D215F]/58">
-          适合演示“外部知识 + 内部数据”的回答模式。当前默认使用本地知识库，后面也可以平滑换成真实模型。
+          适合演示“外部知识 + 内部数据”的回答模式。{qaPreset.detail}
         </p>
         <div className="mt-4 flex gap-2">
           <Input
@@ -165,6 +174,14 @@ export default function FAQPage({ demoRuntime }) {
               追问会带上程序内档案，更容易展示“外部知识 + 内部数据”差异。
             </p>
           </div>
+        </div>
+        <div className="mt-3 rounded-[18px] border border-[#2D215F]/8 bg-white px-4 py-3">
+          <p className="text-[10px] font-bold tracking-[0.12em] text-[#2D215F]/45">当前配置说明</p>
+          <p className="mt-1 text-[11px] leading-[1.8] text-[#2D215F]/62">
+            {qaPreset.mode === "local"
+              ? "当前演示会稳定使用本地知识包回答，适合提报和离线演示。后续只要配置 OPENAI_API_KEY，并把 VITE_QA_MODE 切到 remote，就可以接入远程小模型。"
+              : "当前演示已配置为远程小模型模式；如果接口暂时不可用，系统会自动回退到本地知识库，保证演示不中断。"}
+          </p>
         </div>
       </Card>
 

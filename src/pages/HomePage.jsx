@@ -1,4 +1,5 @@
 import { weeklySleep } from "../data";
+import { getQaModePreset } from "../lib/qa";
 import {
   AlertIcon,
   ChevronRightIcon,
@@ -77,6 +78,7 @@ function TrendChart() {
 
 export default function HomePage({ demoRuntime, onNavigate, onToast }) {
   const { currentMedication, patient, reportSummary, sleepStats, adverseRecords } = demoRuntime;
+  const qaPreset = getQaModePreset();
   const quickActions = [
     { label: "记录睡眠", sub: "补充昨夜情况", Icon: MoonLogIcon, page: "sleep" },
     { label: "用药打卡", sub: `今晚 ${currentMedication.reminderTime}`, Icon: PillIcon, page: "medication" },
@@ -155,10 +157,36 @@ export default function HomePage({ demoRuntime, onNavigate, onToast }) {
             <p className="mt-1 text-[11px] leading-[1.8] text-[#2D215F]/56">
               可以直接问睡眠知识、达卫可用药、你的当前周期和下次复诊重点。
             </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="rounded-full bg-[#F2F2F2] px-3 py-2 text-[10px] font-bold text-[#0388A6]">
+                {qaPreset.label}
+              </span>
+              <span className="rounded-full bg-[#F2F2F2] px-3 py-2 text-[10px] font-bold text-[#2D215F]/62">
+                结合你的睡眠与用药档案
+              </span>
+            </div>
           </div>
           <Button className="!min-h-[40px] !px-4" onClick={() => onNavigate("faq")} variant="outline">
             去提问
           </Button>
+        </div>
+        <div className="mt-4 grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
+          <button
+            className="pressable rounded-[18px] bg-[#F2F2F2] px-4 py-3 text-left"
+            onClick={() => onNavigate("faq")}
+            type="button"
+          >
+            <p className="text-[11px] font-bold text-[#2D215F]">先演示标签知识</p>
+            <p className="mt-1 text-[10px] text-[#2D215F]/48">“达卫可应该在什么时间吃？”</p>
+          </button>
+          <button
+            className="pressable rounded-[18px] bg-[#F2F2F2] px-4 py-3 text-left"
+            onClick={() => onNavigate("faq")}
+            type="button"
+          >
+            <p className="text-[11px] font-bold text-[#2D215F]">再演示个人档案</p>
+            <p className="mt-1 text-[10px] text-[#2D215F]/48">“我现在用了多少药、什么时候复诊？”</p>
+          </button>
         </div>
       </Card>
 

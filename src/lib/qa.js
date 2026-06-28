@@ -1,5 +1,21 @@
 import { buildKnowledgeContext, getLocalQaResponse, getRelevantKnowledgeEntries } from "./qa-core";
 
+export function getQaModePreset() {
+  const mode = import.meta.env.VITE_QA_MODE ?? "local";
+
+  return mode === "local"
+    ? {
+        mode: "local",
+        label: "本地知识库",
+        detail: "直接检索内置睡眠知识、达卫可标签和程序内档案。",
+      }
+    : {
+        mode: "remote",
+        label: "远程小模型",
+        detail: "先拼接当前档案与知识片段，再调用远程模型生成回答。",
+      };
+}
+
 export async function askDemoQa(query, runtimeData) {
   const mode = import.meta.env.VITE_QA_MODE ?? "local";
 
